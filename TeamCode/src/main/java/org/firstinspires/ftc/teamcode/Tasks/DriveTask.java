@@ -23,10 +23,7 @@ public class DriveTask extends Task {
 
     @Override
     public boolean loop(){
-        if( this.motor.getCurrentPosition() < target ){
-            return true;
-        }
-        return false;
+        return this.motor.getCurrentPosition() < target;
     }
 
     @Override

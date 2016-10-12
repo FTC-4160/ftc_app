@@ -2,14 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * Created by Steven on 9/10/2016.
  */
 //We need to build a wall
-public class Robot {
+class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight;
     static ModernRoboticsI2cGyro gyro;

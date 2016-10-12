@@ -12,10 +12,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 @TeleOp( name="SensorTest" )
 public class SensorTest extends OpMode {
-    ModernRoboticsI2cColorSensor colorSensor;
-    ModernRoboticsI2cGyro gyroSensor;
-    ModernRoboticsAnalogOpticalDistanceSensor distanceSensor;
-    ModernRoboticsDigitalTouchSensor touchSensor;
+    private ModernRoboticsI2cColorSensor colorSensor;
+    private ModernRoboticsI2cGyro gyroSensor;
+    private ModernRoboticsAnalogOpticalDistanceSensor distanceSensor;
+    private ModernRoboticsDigitalTouchSensor touchSensor;
 
     @Override
     public void init() {

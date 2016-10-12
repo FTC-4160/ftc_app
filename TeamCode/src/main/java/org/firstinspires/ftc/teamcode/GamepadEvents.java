@@ -11,8 +11,8 @@ import java.util.HashMap;
  * Created by Steven on 10/9/2016.
  */
 public class GamepadEvents {
-    private HashMap<Button, Boolean> buttonstate = new HashMap<>();
-    private OpMode eventOpMode;
+    private final HashMap<Button, Boolean> buttonstate = new HashMap<>();
+    private final OpMode eventOpMode;
     public <EventOpMode extends OpMode & Handler> GamepadEvents( EventOpMode handler ){
         this.eventOpMode = handler;
         for(Button b: Button.values()){
@@ -35,7 +35,7 @@ public class GamepadEvents {
         }
     }
 
-    protected interface Handler {
+    interface Handler {
         void onButtonPress(Button button);
         void onButtonRelease(Button button);
     }

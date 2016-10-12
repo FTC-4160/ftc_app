@@ -23,16 +23,14 @@ public class MultiTask extends Task {
 
     @Override
     public boolean loop(){
-        Iterator<Task> iter = tasks.listIterator();
-        while( iter.hasNext() ){
-            Task t = iter.next();
+        for (Task t : tasks) {
             boolean complete = t.loop();
-            if( complete && mode == Mode.WaitForAny ){
+            if (complete && mode == Mode.WaitForAny) {
                 stopAllTasks();
                 return true;
-            }else if( complete && mode == Mode.WaitForAll ){
+            } else if (complete && mode == Mode.WaitForAll) {
                 t.stop();
-                tasks.remove( t );
+                tasks.remove(t);
             }
         }
         return tasks.size() == 0;
