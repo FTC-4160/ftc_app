@@ -16,7 +16,7 @@ public class AutoTest extends OpMode {
     private int maxTasks;
     @Override
     public void init() {
-        Common.init( hardwareMap );
+        Robot.init( hardwareMap );
         //add tasks here
         maxTasks = tasks.size();
         tasks.get( 1 ).init();

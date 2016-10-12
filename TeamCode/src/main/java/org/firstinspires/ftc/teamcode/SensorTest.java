@@ -19,11 +19,11 @@ public class SensorTest extends OpMode {
 
     @Override
     public void init() {
-        Common.init( hardwareMap );
-        colorSensor = Common.colorLeft;
-        gyroSensor = Common.gyro;
-        distanceSensor = Common.leftLineFollow;
-        touchSensor = Common.touchSensor;
+        Robot.init( hardwareMap );
+        colorSensor = Robot.colorLeft;
+        gyroSensor = Robot.gyro;
+        distanceSensor = Robot.leftLineFollow;
+        touchSensor = Robot.touchSensor;
     }
 
     @Override
