@@ -9,10 +9,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous( name = "Beacon Press Red" )
 public class AutonomousBeaconPressRed extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         Robot.init( hardwareMap );
         waitForStart();
         Robot.move( 0.75, 0.75 );
-        wait( 1000 );
+        sleep( 1000 );
     }
 }
