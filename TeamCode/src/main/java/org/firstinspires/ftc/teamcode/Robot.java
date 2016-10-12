@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -30,8 +31,10 @@ public class Robot {
         frontRight.setMaxSpeed( NEVEREST_TICKS_PER_SECOND );
         backLeft.setMaxSpeed( NEVEREST_TICKS_PER_SECOND );
         backRight.setMaxSpeed( NEVEREST_TICKS_PER_SECOND );
-        backRight.setDirection( DcMotor.Direction.REVERSE );
+        frontLeft.setDirection( DcMotor.Direction.REVERSE );
         frontRight.setDirection( DcMotor.Direction.REVERSE );
+        backLeft.setDirection( DcMotor.Direction.REVERSE );
+        backRight.setDirection( DcMotor.Direction.REVERSE );
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get( "gyro" );
         colorRight = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "rcolor" );
         colorLeft = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "lcolor" );
