@@ -9,16 +9,21 @@ import com.qualcomm.robotcore.util.Range;
  */
 @TeleOp( name = "OmniDirectional" )
 public class OmniDirectional extends OpMode {
-
+    int targetValue = 0;
     @Override
     public void loop(){
         double turn = gamepad1.left_trigger - gamepad1.right_trigger;
+        if( Math.abs( turn ) < 0.1 ){
+            turn += ((Robot.gyro.getIntegratedZValue() - targetValue) * 0.01);
+        }else{
+            targetValue = Robot.gyro.getIntegratedZValue();
+        }
         double drivey = -gamepad1.right_stick_y;
         double drivex = -gamepad1.right_stick_x;
-        double rightFront = Range.clip( drivey  - drivex + turn, -1, 1 );
-        double leftFront =  Range.clip( -drivey - drivex + turn, -1, 1 );
-        double rightBack =  Range.clip( -drivey + drivex + turn, -1, 1 );
-        double leftBack =   Range.clip( drivey  + drivex + turn, -1, 1 );
+        double rightFront = Range.clip( drivey  + drivex + turn, -1, 1 );
+        double leftFront =  Range.clip( -drivey + drivex + turn, -1, 1 );
+        double rightBack =  Range.clip( drivey - drivex + turn, -1, 1 );
+        double leftBack =   Range.clip( -drivey - drivex + turn, -1, 1 );
 
         Robot.frontLeft.setPower( leftFront );
         Robot.frontRight.setPower( rightFront );
