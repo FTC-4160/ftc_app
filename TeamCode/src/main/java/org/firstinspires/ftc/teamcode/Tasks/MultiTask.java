@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Tasks;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by Steven on 9/10/2016.
  */
 public class MultiTask extends Task {
-    private ArrayList<Task> tasks;
-    private Mode mode;
+    private final ArrayList<Task> tasks;
+    private final Mode mode;
     public MultiTask(ArrayList<Task> tasks, Mode mode){
         this.mode = mode;
         this.tasks = tasks;

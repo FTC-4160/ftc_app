@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Created by Steven on 9/10/2016.
  */
 public class DriveTask extends Task {
-    private DcMotor motor;
-    private double power;
-    private int target;
+    private final DcMotor motor;
+    private final double power;
+    private final int target;
 
     public DriveTask( DcMotor motor, double power, int target ){
         this.motor = motor;

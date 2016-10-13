@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 @Autonomous( name = "AutoTest" )
 public class AutoTest extends OpMode {
-    private ArrayList<Task> tasks = new ArrayList<>();
+    private final ArrayList<Task> tasks = new ArrayList<>();
     private int maxTasks;
     @Override
     public void init() {
