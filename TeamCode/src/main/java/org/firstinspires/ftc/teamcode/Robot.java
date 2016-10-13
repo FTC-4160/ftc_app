@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * Created by Steven on 9/10/2016.
@@ -16,6 +19,7 @@ class Robot {
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineFollow, rightLineFollow;
     static ModernRoboticsDigitalTouchSensor touchSensor;
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
+    static int gyroTarget = 0;
 
     public static void init( HardwareMap hardwareMap ){
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
@@ -45,10 +49,27 @@ class Robot {
         rightLineFollow.enableLed( true );
     }
 
-    public static void move( double leftPower, double rightPower ) {
-        frontLeft.setPower(leftPower);
-        frontRight.setPower(leftPower);
-        backLeft.setPower(rightPower);
-        frontRight.setPower(rightPower);
+    public static void drive( double drivex, double drivey, double turn ) {
+        if (Math.abs(turn) < 0.1) {
+            turn += ((Robot.gyro.getIntegratedZValue() - gyroTarget) * 0.01);
+        } else {
+            gyroTarget = Robot.gyro.getIntegratedZValue();
+        }
+        double rightFront = zeroRangeClip( drivey + drivex - turn );
+        double leftFront = zeroRangeClip( -drivey + drivex - turn );
+        double rightBack = zeroRangeClip( drivey - drivex - turn );
+        double leftBack = zeroRangeClip( -drivey - drivex - turn );
+
+        frontLeft.setPower(leftFront);
+        frontRight.setPower(rightFront);
+        backLeft.setPower(leftBack);
+        backRight.setPower(rightBack);
+    }
+
+    private static double zeroRangeClip( double input ){
+        if( Math.abs( input ) < 0.2 ){
+            return 0.0;
+        }
+        return Range.clip( input, -1, 1 );
     }
 }
