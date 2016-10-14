@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 @TeleOp( name = "OmniDirectional" )
 public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
+    GamepadEvents gamepadEvents = new GamepadEvents( this );
     @Override
     public void loop(){
         double drivey = -gamepad1.left_stick_y;
@@ -29,6 +30,7 @@ public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
     @Override
     public void init_loop() {
         telemetry.addData( "Gyro Calibration", Robot.gyro.isCalibrating() ? "Calibrating..." : "Complete" );
+        gamepadEvents.handleEvents();
     }
 
     @Override
