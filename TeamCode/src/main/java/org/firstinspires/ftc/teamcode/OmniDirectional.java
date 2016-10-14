@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Created by Steven on 8/23/2016.
  */
 @TeleOp( name = "OmniDirectional" )
-public class OmniDirectional extends OpMode {
+public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
     @Override
     public void loop(){
         double drivey = -gamepad1.left_stick_y;
@@ -29,5 +29,22 @@ public class OmniDirectional extends OpMode {
     @Override
     public void init_loop() {
         telemetry.addData( "Gyro Calibration", Robot.gyro.isCalibrating() ? "Calibrating..." : "Complete" );
+    }
+
+    @Override
+    public void onButtonPress(GamepadEvents.Button button) {
+        switch( button ){
+            case GAMEPAD1_LEFT_BUMPER:
+                Robot.gyroTarget -= 10;
+                break;
+            case GAMEPAD1_RIGHT_BUMPER:
+                Robot.gyroTarget += 10;
+                break;
+        }
+    }
+
+    @Override
+    public void onButtonRelease(GamepadEvents.Button button) {
+
     }
 }
