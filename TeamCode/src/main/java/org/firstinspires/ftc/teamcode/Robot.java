@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by Steven on 9/10/2016.
@@ -12,11 +15,13 @@ import com.qualcomm.robotcore.util.Range;
 class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight;
+    static Servo leftButton, rightButton;
     static ModernRoboticsI2cGyro gyro;
     static ModernRoboticsI2cColorSensor colorRight, colorLeft;
-    static ModernRoboticsAnalogOpticalDistanceSensor leftLineFollow, rightLineFollow;
+    static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
     static ModernRoboticsDigitalTouchSensor touchSensor;
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
+    static final double LIGHT_THRESHOLD = 0.5;
     static int gyroTarget = 0;
 
     public static void init( HardwareMap hardwareMap ){
@@ -36,22 +41,26 @@ class Robot {
         frontRight.setDirection( DcMotor.Direction.REVERSE );
         backLeft.setDirection( DcMotor.Direction.REVERSE );
         backRight.setDirection( DcMotor.Direction.REVERSE );
+        leftButton = hardwareMap.servo.get( "lservo" );
+        rightButton = hardwareMap.servo.get( "rservo" );
+        leftButton.setPosition( 0 );
+        rightButton.setPosition( 0 );
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get( "gyro" );
         colorRight = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "rcolor" );
         colorLeft = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "lcolor" );
-        leftLineFollow = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "lods" );
-        rightLineFollow = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "rods" );
+        leftLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "lods" );
+        rightLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "rods" );
         touchSensor = (ModernRoboticsDigitalTouchSensor)hardwareMap.touchSensor.get( "touchSensor" );
         gyro.calibrate();
-        leftLineFollow.enableLed( true );
-        rightLineFollow.enableLed( true );
+        leftLineDetector.enableLed( true );
+        leftLineDetector.enableLed( true );
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
         if (Math.abs(turn) < 0.1) {
-            turn += ((Robot.gyro.getIntegratedZValue() - gyroTarget) * 0.01);
+            turn += ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);
         } else {
-            gyroTarget = Robot.gyro.getIntegratedZValue();
+            gyroTarget = gyro.getIntegratedZValue();
         }
         double rightFront = zeroRangeClip( drivey + drivex - turn );
         double leftFront = zeroRangeClip( -drivey + drivex - turn );
@@ -64,8 +73,33 @@ class Robot {
         backRight.setPower(rightBack);
     }
 
+    public static void stop(){
+        frontLeft.setPower( 0 );
+        frontRight.setPower( 0 );
+        backLeft.setPower( 0 );
+        backRight.setPower( 0 );
+    }
+
+    public static boolean detectsLine(){
+        //TODO: Insert actual values for line detection
+        return rightLineDetector.getLightDetected() < LIGHT_THRESHOLD || leftLineDetector.getLightDetected() < LIGHT_THRESHOLD;
+    }
+
+    public static void claimBeaconRed(){
+        (colorLeft.red() > colorRight.red() ? leftButton : rightButton).setPosition( 1.0 );
+    }
+
+    public static void claimBeaconBlue(){
+        (colorLeft.blue() > colorRight.blue() ? leftButton : rightButton).setPosition( 1.0 );
+    }
+
+    public static void resetButtonServos(){
+        leftButton.setPosition( 0 );
+        rightButton.setPosition( 0 );
+    }
+
     private static double zeroRangeClip( double input ){
-        if( Math.abs( input ) < 0.2 ){
+        if( Math.abs( input ) < 0.1 ){
             return 0.0;
         }
         return Range.clip( input, -1, 1 );
