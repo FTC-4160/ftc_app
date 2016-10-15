@@ -43,8 +43,7 @@ class Robot {
         backRight.setDirection( DcMotor.Direction.REVERSE );
         leftButton = hardwareMap.servo.get( "lservo" );
         rightButton = hardwareMap.servo.get( "rservo" );
-        leftButton.setPosition( 0 );
-        rightButton.setPosition( 0 );
+        resetButtonServos();
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get( "gyro" );
         colorRight = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "rcolor" );
         colorLeft = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "lcolor" );

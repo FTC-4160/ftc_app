@@ -9,14 +9,35 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp( name = "OmniDirectional" )
 public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
     GamepadEvents gamepadEvents = new GamepadEvents( this );
+    State state = State.DRIVER_CONTROL;
+
     @Override
     public void loop(){
         double drivey = -gamepad1.left_stick_y;
         double drivex = gamepad1.left_stick_x;
         double turn = gamepad1.right_trigger - gamepad1.left_trigger;
 
-        Robot.drive( drivey, drivex, turn );
+        switch( state ){
+            case DRIVER_CONTROL: Robot.drive( drivey, drivex, turn ); break;
+            case BEACON_CAPTURE_FORWARDS:
+                if( Robot.detectsLine() ){
+                    Robot.stop();
+                    Robot.claimBeaconRed();
+                }else{
+                    Robot.drive( 0.25, 1 , 0 );
+                }
+                break;
+            case BEACON_CAPTURE_BACKWARDS:
+                if( Robot.detectsLine() ){
+                    Robot.stop();
+                    Robot.claimBeaconRed();
+                }else{
+                    Robot.drive( 0.25, -1, 0 );
+                }
+                break;
+        }
 
+        telemetry.addData( "State", state.toString() );
         telemetry.addData( "drivey", drivey );
         telemetry.addData( "drivex", drivex );
         telemetry.addData( "Turn", turn );
@@ -42,11 +63,25 @@ public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
             case GAMEPAD1_RIGHT_BUMPER:
                 Robot.gyroTarget += 10;
                 break;
+            case GAMEPAD1_Y:
+                state = State.BEACON_CAPTURE_FORWARDS;
+                break;
+            case GAMEPAD1_A:
+                state = State.BEACON_CAPTURE_BACKWARDS;
+                break;
+            case GAMEPAD1_X:
+                Robot.resetButtonServos();
+                state = State.DRIVER_CONTROL;
         }
     }
 
     @Override
     public void onButtonRelease(GamepadEvents.Button button) {
 
+    }
+    private enum State{
+        DRIVER_CONTROL,
+        BEACON_CAPTURE_FORWARDS,
+        BEACON_CAPTURE_BACKWARDS,
     }
 }
