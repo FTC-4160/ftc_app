@@ -41,6 +41,8 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         telemetry.addData( "drivey", drivey );
         telemetry.addData( "drivex", drivex );
         telemetry.addData( "Turn", turn );
+        telemetry.addData( "ODS Right", Robot.rightLineDetector.getLightDetected() );
+        telemetry.addData( "ODS Left", Robot.leftLineDetector.getLightDetected() );
     }
 
     @Override
