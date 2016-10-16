@@ -5,9 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * Created by Steven on 10/16/2016.
+ * Using a Rotation Matrix
+ * x' = xcosΘ - ysinΘ
+ * y' = ysinΘ + ycosΘ
  */
 @TeleOp( name = "BetaHolonomic" )
 public class BetaHolonomic extends OpMode {
+    private static double ANGLE_45 = Math.sqrt( 2.0D ) / 2.0D; //sin and cos are the same so we only need one value
+
     @Override
     public void init() {
         Robot.init( hardwareMap );
@@ -19,12 +24,11 @@ public class BetaHolonomic extends OpMode {
         double joyy = gamepad1.right_stick_y;
 
         double magnitude = Math.hypot( joyx, joyy ); //get the magnitude of the vector
-        double angle = Math.atan2( joyy, joyx ) + Math.PI / 4; //rotate by 45 degrees
 
-        double unitx = Math.cos( angle ); //find the new x coordinate on the unit circle
-        double unity = Math.sin( angle ); //find the new y coordinate on the unit circle
+        double unitx = joyx * ANGLE_45 - joyy * ANGLE_45; //find the new x coordinate on the unit circle
+        double unity = joyx * ANGLE_45 + joyy * ANGLE_45; //find the new y coordinate on the unit circle
 
-        double scale = Math.abs( magnitude / Math.max( unitx, unity ) ); //find which one is the largest; at magnitude 1.0 we want to have either x or y be 1
+        double scale = Math.abs( magnitude / Math.max( unitx, unity ) ); //figure out how to scale for if the magnitude is 1 a motor is always 1
 
         double motorx = unitx * scale;
         double motory = unity * scale;
