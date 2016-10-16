@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import java.lang.reflect.Method;
-
 /**
  * Created by Steven on 9/10/2016.
  */

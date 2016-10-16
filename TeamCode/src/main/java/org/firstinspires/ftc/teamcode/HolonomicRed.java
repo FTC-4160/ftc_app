@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 @TeleOp( name = "HolonomicRed" )
 public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
-    GamepadEvents gamepadEvents = new GamepadEvents( this );
+    final GamepadEvents gamepadEvents = new GamepadEvents( this );
     State state = State.DRIVER_CONTROL;
 
     @Override
@@ -75,10 +75,6 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         }
     }
 
-    @Override
-    public void onButtonRelease(GamepadEvents.Button button) {
-
-    }
     protected enum State{
         DRIVER_CONTROL,
         BEACON_CAPTURE_FORWARDS,

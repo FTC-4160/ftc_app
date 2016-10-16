@@ -28,8 +28,6 @@ public class GamepadEvents {
                 buttonstate.put(b, current );
                 if( current ){
                     ((Handler)eventOpMode).onButtonPress( b );
-                }else{
-                    ((Handler)eventOpMode).onButtonRelease( b );
                 }
             }
         }
@@ -37,7 +35,6 @@ public class GamepadEvents {
 
     interface Handler {
         void onButtonPress(Button button);
-        void onButtonRelease(Button button);
     }
     // A "Button" is anything on a gamepad that registers as a boolean value (true / false)
     protected enum Button {

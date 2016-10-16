@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 /**
  * Created by Muskies on 10/6/2016.
  */
+@SuppressWarnings("ALL")
 @Autonomous( name = "Beacon Press Red" )
 public class AutonomousBeaconPressRed extends LinearOpMode {
     protected int direction = 1;
