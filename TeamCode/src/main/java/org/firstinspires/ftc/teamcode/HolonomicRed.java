@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 /**
  * Created by Steven on 8/23/2016.
  */
-@TeleOp( name = "OmniDirectional" )
-public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
+@TeleOp( name = "HolonomicRed" )
+public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     GamepadEvents gamepadEvents = new GamepadEvents( this );
     State state = State.DRIVER_CONTROL;
 
@@ -79,7 +79,7 @@ public class OmniDirectional extends OpMode implements GamepadEvents.Handler {
     public void onButtonRelease(GamepadEvents.Button button) {
 
     }
-    private enum State{
+    protected enum State{
         DRIVER_CONTROL,
         BEACON_CAPTURE_FORWARDS,
         BEACON_CAPTURE_BACKWARDS,
