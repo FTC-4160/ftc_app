@@ -4,6 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceS
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Created by Steven on 10/1/2016.
  */
 @TeleOp( name="SensorTest" )
+@Disabled
 public class SensorTest extends OpMode {
     private ModernRoboticsI2cColorSensor colorSensor;
     private ModernRoboticsI2cGyro gyroSensor;
@@ -22,7 +24,7 @@ public class SensorTest extends OpMode {
         Robot.init( hardwareMap );
         colorSensor = Robot.colorLeft;
         gyroSensor = Robot.gyro;
-        distanceSensor = Robot.leftLineFollow;
+        distanceSensor = Robot.leftLineDetector;
         touchSensor = Robot.touchSensor;
     }
 
