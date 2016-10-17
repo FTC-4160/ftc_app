@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+
 /**
  * Created by Steven on 10/16/2016.
  * Using a Rotation Matrix
@@ -28,7 +30,7 @@ public class BetaHolonomic extends OpMode {
         double unitx = joyx * ANGLE_45 - joyy * ANGLE_45; //find the new x coordinate on the unit circle
         double unity = joyx * ANGLE_45 + joyy * ANGLE_45; //find the new y coordinate on the unit circle
 
-        double scale = Math.abs( magnitude / Math.max( unitx, unity ) ); //figure out how to scale for if the magnitude is 1 a motor is always 1
+        double scale = magnitude / Math.max( Math.abs( unitx ), Math.abs( unity ) ); //figure out how to scale for if the magnitude is 1 a motor is always 1
 
         double motorx = unitx * scale;
         double motory = unity * scale;
