@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by Muskies on 10/6/2016.
  */
-@SuppressWarnings("ALL")
 @Autonomous( name = "Beacon Press Red" )
 public class AutonomousBeaconPressRed extends LinearOpMode {
     protected int direction = 1;
@@ -23,13 +23,22 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
     public void runOpMode() {
         Robot.init( hardwareMap );
         waitForStart();
-        while( opModeIsActive() && !Robot.detectsLine() ) {
+        ElapsedTime time = new ElapsedTime();
+        while( opModeIsActive() && time.seconds() < 4 ){
             Robot.drive( -0.25, 0.25 * direction, 0 );
+        }
+        while( opModeIsActive() && !Robot.detectsLine() ) {
+            Robot.drive( -0.25, direction, 0 );
         }
         claim();
         while( opModeIsActive() && !Robot.detectsLine() ) {
             Robot.drive( -0.25, direction, 0 );
         }
         claim();
+    }
+    @Override
+    public void handleLoop(){
+        telemetry.addData( "Detects line", Robot.detectsLine() );
+        updateTelemetry( telemetry );
     }
 }

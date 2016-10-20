@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -19,8 +20,9 @@ class Robot {
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
     static ModernRoboticsDigitalTouchSensor touchSensor;
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
-    static final double LIGHT_THRESHOLD = 0.5;
+    static final double LIGHT_THRESHOLD = 0.75;
     static int gyroTarget = 0;
+    private static boolean gyroOff;
 
     public static void init( HardwareMap hardwareMap ){
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
@@ -44,7 +46,11 @@ class Robot {
         resetButtonServos();
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get( "gyro" );
         colorRight = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "rcolor" );
+        colorRight.setI2cAddress( I2cAddr.create7bit(0x1e) );
+        colorRight.enableLed( false );
         colorLeft = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "lcolor" );
+        colorLeft.setI2cAddress( I2cAddr.create7bit(0x26) );
+        colorLeft.enableLed( false );
         leftLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "lods" );
         rightLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "rods" );
         touchSensor = (ModernRoboticsDigitalTouchSensor)hardwareMap.touchSensor.get( "touchSensor" );
@@ -55,14 +61,18 @@ class Robot {
 
     public static void drive( double drivex, double drivey, double turn ) {
         if (Math.abs(turn) < 0.1) {
-            turn += ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);
+            if( gyroOff ){
+                gyroTarget = gyro.getIntegratedZValue();
+            }
+            turn -= ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);
+            gyroOff = false;
         } else {
-            gyroTarget = gyro.getIntegratedZValue();
+            gyroOff = true;
         }
-        double rightFront = zeroRangeClip( drivey + drivex - turn );
-        double leftFront = zeroRangeClip( -drivey + drivex - turn );
-        double rightBack = zeroRangeClip( drivey - drivex - turn );
-        double leftBack = zeroRangeClip( -drivey - drivex - turn );
+        double rightFront = zeroRangeClip( drivey - drivex - turn );
+        double leftFront = zeroRangeClip( -drivey - drivex - turn );
+        double rightBack = zeroRangeClip( drivey + drivex - turn );
+        double leftBack = zeroRangeClip( -drivey + drivex - turn );
 
         frontLeft.setPower(leftFront);
         frontRight.setPower(rightFront);
@@ -78,8 +88,7 @@ class Robot {
     }
 
     public static boolean detectsLine(){
-        //TODO: Insert actual values for line detection
-        return rightLineDetector.getLightDetected() < LIGHT_THRESHOLD || leftLineDetector.getLightDetected() < LIGHT_THRESHOLD;
+        return rightLineDetector.getLightDetected() > LIGHT_THRESHOLD || leftLineDetector.getLightDetected() > LIGHT_THRESHOLD;
     }
 
     public static void claimBeaconRed(){
