@@ -46,10 +46,10 @@ class Robot {
         resetButtonServos();
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get( "gyro" );
         colorRight = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "rcolor" );
-        colorRight.setI2cAddress( I2cAddr.create7bit(0x1e) );
-        colorRight.enableLed( false );
         colorLeft = (ModernRoboticsI2cColorSensor)hardwareMap.colorSensor.get( "lcolor" );
+        colorRight.setI2cAddress( I2cAddr.create7bit(0x1e) );
         colorLeft.setI2cAddress( I2cAddr.create7bit(0x26) );
+        colorRight.enableLed( false );
         colorLeft.enableLed( false );
         leftLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "lods" );
         rightLineDetector = (ModernRoboticsAnalogOpticalDistanceSensor)hardwareMap.opticalDistanceSensor.get( "rods" );
@@ -92,11 +92,11 @@ class Robot {
     }
 
     public static void claimBeaconRed(){
-        (colorLeft.red() > colorRight.red() ? leftButton : rightButton).setPosition( 1.0 );
+        (colorLeft.red() > colorRight.red() ? leftButton : rightButton).setPosition( 0.5 );
     }
 
     public static void claimBeaconBlue(){
-        (colorLeft.blue() > colorRight.blue() ? leftButton : rightButton).setPosition( 1.0 );
+        (colorLeft.blue() > colorRight.blue() ? leftButton : rightButton).setPosition( 0.5 );
     }
 
     public static void resetButtonServos(){

@@ -24,20 +24,29 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
         Robot.init( hardwareMap );
         waitForStart();
         ElapsedTime time = new ElapsedTime();
-        while( opModeIsActive() && time.seconds() < 4 ){
+        //move to the wall
+        while( opModeIsActive() && time.seconds() < 4.5 ){
             Robot.drive( -0.25, 0.25 * direction, 0 );
         }
+        //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            Robot.drive( -0.25, direction, 0 );
+            Robot.drive( -0.1, direction * 0.4, 0 );
         }
         claim();
+        time.reset();
+        //move off the line
+        while( opModeIsActive() && time.seconds() < 2 ){
+            Robot.drive( -0.1, 0.4 * direction, 0 );
+        }
+        //drive to the second line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            Robot.drive( -0.25, direction, 0 );
+            Robot.drive( -0.1, direction * 0.4, 0 );
         }
         claim();
     }
     @Override
     public void handleLoop(){
+        telemetry.addData( "Calibration", Robot.gyro.isCalibrating() ? "Calibrating..." : "Complete" );
         telemetry.addData( "Detects line", Robot.detectsLine() );
         updateTelemetry( telemetry );
     }

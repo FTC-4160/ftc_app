@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * Created by Steven on 10/15/2016.
  */
 @TeleOp( name = "HolonomicBlue" )
+@Disabled
 public class HolonomicBlue extends HolonomicRed {
     @Override
     public void loop(){
