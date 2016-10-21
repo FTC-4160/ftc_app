@@ -11,6 +11,24 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     final GamepadEvents gamepadEvents = new GamepadEvents( this );
     State state = State.DRIVER_CONTROL;
 
+    protected void captureForwards(){
+        if( Robot.detectsLine() ){
+            Robot.stop();
+            Robot.claimBeaconRed();
+        }else{
+            Robot.drive( -0.1, 0.4 , 0 );
+        }
+    }
+
+    protected void captureBackwards(){
+        if( Robot.detectsLine() ){
+            Robot.stop();
+            Robot.claimBeaconRed();
+        }else{
+            Robot.drive( -0.1, -0.4, 0 );
+        }
+    }
+
     @Override
     public void loop(){
         double drivey = -gamepad1.right_stick_y;
@@ -19,26 +37,13 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
         if( Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
             state = State.DRIVER_CONTROL;
+            Robot.resetButtonServos();
         }
 
         switch( state ){
             case DRIVER_CONTROL: Robot.drive( drivex, drivey, turn ); break;
-            case BEACON_CAPTURE_FORWARDS:
-                if( Robot.detectsLine() ){
-                    Robot.stop();
-                    Robot.claimBeaconRed();
-                }else{
-                    Robot.drive( -0.1, 0.4 , 0 );
-                }
-                break;
-            case BEACON_CAPTURE_BACKWARDS:
-                if( Robot.detectsLine() ){
-                    Robot.stop();
-                    Robot.claimBeaconRed();
-                }else{
-                    Robot.drive( -0.1, -0.4, 0 );
-                }
-                break;
+            case BEACON_CAPTURE_FORWARDS: captureForwards(); break;
+            case BEACON_CAPTURE_BACKWARDS: captureBackwards(); break;
         }
 
         gamepadEvents.handleEvents();
