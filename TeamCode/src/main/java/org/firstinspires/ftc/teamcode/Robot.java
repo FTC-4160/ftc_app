@@ -20,7 +20,7 @@ class Robot {
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
     static ModernRoboticsDigitalTouchSensor touchSensor;
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
-    static final double LIGHT_THRESHOLD = 0.75;
+    static final double LIGHT_THRESHOLD = 0.075; //correction
     static int gyroTarget = 0;
     private static boolean gyroOff;
 
@@ -101,7 +101,7 @@ class Robot {
 
     public static void resetButtonServos(){
         leftButton.setPosition( 0 );
-        rightButton.setPosition( 0 );
+        rightButton.setPosition( 1.0 );
     }
 
     private static double zeroRangeClip( double input ){
