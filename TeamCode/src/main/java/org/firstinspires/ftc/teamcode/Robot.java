@@ -7,10 +7,11 @@ import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /**
  * Created by Steven on 9/10/2016.
  */
-//We need to build a wall
 class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight;
@@ -20,9 +21,34 @@ class Robot {
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
     static ModernRoboticsDigitalTouchSensor touchSensor;
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
-    static final double LIGHT_THRESHOLD = 0.075; //correction
+    static final double LIGHT_THRESHOLD = 0.075;
     static int gyroTarget = 0;
     private static boolean gyroOff;
+    private static boolean gyroAssistEnabled = true;
+
+    public static void addTelemetry( Telemetry t ){
+        t.addData( "Left Front Motor Power", frontLeft.getPower() );
+        t.addData( "Right Front Motor Power", frontRight.getPower() );
+        t.addData( "Left Back Motor Power", backLeft.getPower() );
+        t.addData( "Right Back Motor Power", backRight.getPower() );
+
+        t.addData( "Servo Button Left", leftButton.getPosition() );
+        t.addData( "Servo Button Right", rightButton.getPosition() );
+
+        t.addData( "Gyro Sensor", gyro.getIntegratedZValue() );
+        t.addData( "Gyro Calibration", gyro.isCalibrating() ? "Calibrating" : "Complete" );
+        t.addData( "More Red", colorLeft.red() > colorRight.red() ? "Left" : "Right" );
+        t.addData( "More Blue", colorLeft.blue() > colorRight.blue() ? "Left" : "Right" );
+        t.addData( "ODS Left", leftLineDetector.getLightDetected() );
+        t.addData( "ODS Right", rightLineDetector.getLightDetected() );
+
+        t.addData( "Gyro Target", gyroTarget );
+        t.addData( "Gyro Enabled", !gyroOff && gyroAssistEnabled );
+    }
+
+    public static void toggleGyroAssist(){
+        gyroAssistEnabled = !gyroAssistEnabled;
+    }
 
     public static void init( HardwareMap hardwareMap ){
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
@@ -61,7 +87,7 @@ class Robot {
 
     public static void drive( double drivex, double drivey, double turn ) {
         if (Math.abs(turn) < 0.1) {
-            if( gyroOff ){
+            if( gyroOff && !gyroAssistEnabled ){
                 gyroTarget = gyro.getIntegratedZValue();
             }
             turn -= ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);

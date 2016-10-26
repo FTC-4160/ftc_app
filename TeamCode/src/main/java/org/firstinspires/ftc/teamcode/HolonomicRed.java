@@ -59,8 +59,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         telemetry.addData( "drivey", drivey );
         telemetry.addData( "drivex", drivex );
         telemetry.addData( "Turn", turn );
-        telemetry.addData( "ODS Right", Robot.rightLineDetector.getLightDetected() );
-        telemetry.addData( "ODS Left", Robot.leftLineDetector.getLightDetected() );
+        Robot.addTelemetry( telemetry );
     }
 
     @Override
@@ -75,7 +74,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     @Override
     public void onButtonPress(GamepadEvents.Button button) {
-        switch( button ){
+        switch( button ) {
             case GAMEPAD1_LEFT_BUMPER:
                 Robot.gyroTarget -= 20;
                 break;
@@ -94,6 +93,10 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
                 Robot.resetButtonServos();
                 robotIsStopped = false;
                 state = State.DRIVER_CONTROL;
+                break;
+            case GAMEPAD1_START:
+                Robot.toggleGyroAssist();
+                break;
         }
     }
 

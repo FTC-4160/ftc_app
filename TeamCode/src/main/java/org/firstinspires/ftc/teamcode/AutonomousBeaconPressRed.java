@@ -46,8 +46,8 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
     }
     @Override
     public void handleLoop(){
-        telemetry.addData( "Calibration", Robot.gyro.isCalibrating() ? "Calibrating..." : "Complete" );
-        telemetry.addData( "Detects line", Robot.detectsLine() );
+        Robot.addTelemetry( telemetry );
         updateTelemetry( telemetry );
+        super.handleLoop();
     }
 }
