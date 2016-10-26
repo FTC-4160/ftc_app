@@ -82,10 +82,12 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
                 Robot.gyroTarget += 20;
                 break;
             case GAMEPAD1_Y:
+                Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_FORWARDS;
                 robotIsStopped = false;
                 break;
             case GAMEPAD1_A:
+                Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_BACKWARDS;
                 robotIsStopped = false;
                 break;
