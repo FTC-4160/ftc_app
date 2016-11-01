@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.*;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -34,6 +37,8 @@ class Robot {
         t.addData( "Right Front Motor Power", frontRight.getPower() );
         t.addData( "Left Back Motor Power", backLeft.getPower() );
         t.addData( "Right Back Motor Power", backRight.getPower() );
+        t.addData( "Intake Power", intake.getPower() );
+        t.addData( "Launcher Power", launcher.getPower() );
 
         t.addData( "Servo Button Left", leftButton.getPosition() );
         t.addData( "Servo Button Right", rightButton.getPosition() );
@@ -87,6 +92,9 @@ class Robot {
         leftLineDetector.enableLed( true );
         leftLineDetector.enableLed( true );
         intake = hardwareMap.dcMotor.get( "intake" );
+        intake.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
+        launcher = hardwareMap.dcMotor.get( "launcher" );
+        launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
     }
 
@@ -127,7 +135,10 @@ class Robot {
     }
 
     public static void stop(){
-        Robot.drive( -0.5, 0, 0.0 );
+        frontRight.setPower( 0 );
+        frontLeft.setPower( 0 );
+        backLeft.setPower( 0 );
+        backRight.setPower( 0 );
     }
 
     public static boolean detectsLine(){
@@ -135,6 +146,9 @@ class Robot {
     }
 
     public static void claimBeaconRed(){
+        //drive into the wall to ensure we can press the button
+        Robot.drive( -0.25, 0, 0.0 );
+        //press the button
         if( colorLeft.red() > colorRight.red() ){
             leftButton.setPosition( 1.0 );
         }else{
@@ -143,6 +157,9 @@ class Robot {
     }
 
     public static void claimBeaconBlue(){
+        //drive into the wall to ensure we can press the button
+        Robot.drive( -0.25, 0, 0.0 );
+        //press the button
         if( colorLeft.blue() > colorRight.blue() ){
             leftButton.setPosition( 1.0 );
         }else {

@@ -13,11 +13,9 @@ public class AutonomousBeaconPressBlue extends AutonomousBeaconPressRed {
 
     @Override
     protected void claim(){
-        Robot.stop();
-        sleep( 250 );
         Robot.claimBeaconBlue();
         sleep( 500 );
         Robot.resetButtonServos();
-        sleep( 250 );
+        sleep( 50 );
     }
 }

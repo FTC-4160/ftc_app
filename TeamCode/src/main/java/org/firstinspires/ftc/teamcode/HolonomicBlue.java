@@ -12,7 +12,6 @@ public class HolonomicBlue extends HolonomicRed {
     @Override
     protected void captureForwards(){
         if( Robot.detectsLine() ){
-            Robot.stop();
             Robot.claimBeaconBlue();
         }else{
             Robot.drive( -0.1, 0.4 , 0 );
@@ -21,7 +20,6 @@ public class HolonomicBlue extends HolonomicRed {
     @Override
     protected void captureBackwards(){
         if( Robot.detectsLine() ){
-            Robot.stop();
             Robot.claimBeaconBlue();
         }else{
             Robot.drive( -0.1, -0.4, 0 );

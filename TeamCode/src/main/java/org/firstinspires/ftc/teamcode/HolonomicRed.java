@@ -10,29 +10,20 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     final GamepadEvents gamepadEvents = new GamepadEvents( this );
     State state = State.DRIVER_CONTROL;
-    protected boolean robotIsStopped = false;
 
     protected void captureForwards(){
         if( Robot.detectsLine() ){
-            robotIsStopped = true;
             Robot.claimBeaconRed();
         }else{
             Robot.drive( -0.1, 0.4 , 0 );
-        }
-        if( robotIsStopped ){
-            Robot.stop();
         }
     }
 
     protected void captureBackwards(){
         if( Robot.detectsLine() ){
-            robotIsStopped = true;
             Robot.claimBeaconRed();
         }else{
             Robot.drive( -0.1, -0.4, 0 );
-        }
-        if( robotIsStopped ){
-            Robot.stop();
         }
     }
 
@@ -47,7 +38,6 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         if( Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
             state = State.DRIVER_CONTROL;
             Robot.resetButtonServos();
-            robotIsStopped = false;
         }
 
         switch( state ){
@@ -87,16 +77,13 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
             case GAMEPAD1_Y:
                 Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_FORWARDS;
-                robotIsStopped = false;
                 break;
             case GAMEPAD1_A:
                 Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_BACKWARDS;
-                robotIsStopped = false;
                 break;
             case GAMEPAD1_X:
                 Robot.resetButtonServos();
-                robotIsStopped = false;
                 state = State.DRIVER_CONTROL;
                 break;
             case GAMEPAD1_START:
