@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,8 +15,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 class Robot {
     //This class stores our hardware
-    static DcMotor frontLeft, frontRight, backLeft, backRight;
-    static Servo leftButton, rightButton;
+    static DcMotor frontLeft, frontRight, backLeft, backRight, launcher, intake;
+    static Servo leftButton, rightButton, feeder;
     static ModernRoboticsI2cGyro gyro;
     static ModernRoboticsI2cColorSensor colorRight, colorLeft;
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
@@ -25,6 +26,8 @@ class Robot {
     static int gyroTarget = 0;
     private static boolean gyroOff;
     private static boolean gyroAssistEnabled = true;
+    private static ElapsedTime time;
+    private static double launchTime = 0;
 
     public static void addTelemetry( Telemetry t ){
         t.addData( "Left Front Motor Power", frontLeft.getPower() );
@@ -83,6 +86,7 @@ class Robot {
         gyro.calibrate();
         leftLineDetector.enableLed( true );
         leftLineDetector.enableLed( true );
+        time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
@@ -104,6 +108,21 @@ class Robot {
         frontRight.setPower(rightFront);
         backLeft.setPower(leftBack);
         backRight.setPower(rightBack);
+    }
+
+    public static void launchBall(){
+        Robot.stop();
+        double curPower = launcher.getPower();
+        double curTime = time.time();
+        if( curTime > launchTime ){
+            if( curPower < 1.0 ) {
+                curPower += 0.1;
+            }else{
+                feeder.setPosition( 0 );
+            }
+            launchTime = curTime + 0.1;
+        }
+        launcher.setPower( curPower );
     }
 
     public static void stop(){
@@ -134,6 +153,7 @@ class Robot {
         if( Math.abs( input ) < 0.1 ){
             return 0.0;
         }
-        return Range.clip( input, -1, 1 );
+        //round to the nearest 20th
+        return Math.floor( Range.clip( input, -1, 1 ) * 20 ) * 0.05;
     }
 }
