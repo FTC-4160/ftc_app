@@ -86,12 +86,13 @@ class Robot {
         gyro.calibrate();
         leftLineDetector.enableLed( true );
         leftLineDetector.enableLed( true );
+        intake = hardwareMap.dcMotor.get( "intake" );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
         if (Math.abs(turn) < 0.1) {
-            if( gyroOff && !gyroAssistEnabled ){
+            if( gyroOff || !gyroAssistEnabled ){
                 gyroTarget = gyro.getIntegratedZValue();
             }
             turn -= ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);
@@ -126,10 +127,7 @@ class Robot {
     }
 
     public static void stop(){
-        frontLeft.setPower( 0 );
-        frontRight.setPower( 0 );
-        backLeft.setPower( 0 );
-        backRight.setPower( 0 );
+        Robot.drive( -0.5, 0, 0.0 );
     }
 
     public static boolean detectsLine(){
@@ -137,15 +135,23 @@ class Robot {
     }
 
     public static void claimBeaconRed(){
-        (colorLeft.red() > colorRight.red() ? leftButton : rightButton).setPosition( 0.5 );
+        if( colorLeft.red() > colorRight.red() ){
+            leftButton.setPosition( 1.0 );
+        }else{
+            rightButton.setPosition( 0.0 );
+        }
     }
 
     public static void claimBeaconBlue(){
-        (colorLeft.blue() > colorRight.blue() ? leftButton : rightButton).setPosition( 0.5 );
+        if( colorLeft.blue() > colorRight.blue() ){
+            leftButton.setPosition( 1.0 );
+        }else {
+            rightButton.setPosition( 0.0 );
+        }
     }
 
     public static void resetButtonServos(){
-        leftButton.setPosition( 0 );
+        leftButton.setPosition( 0.0 );
         rightButton.setPosition( 1.0 );
     }
 
