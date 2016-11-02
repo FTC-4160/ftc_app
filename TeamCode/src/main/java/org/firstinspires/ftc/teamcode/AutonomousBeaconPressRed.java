@@ -26,6 +26,8 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
         while( opModeIsActive() && time.seconds() < 4.5 ){
             Robot.drive( -0.25, 0.25 * direction, 0 );
         }
+        //disable gyro assistance
+        Robot.toggleGyroAssist();
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
             Robot.drive( -0.1, direction * 0.4, 0 );

@@ -119,7 +119,7 @@ class Robot {
         backRight.setPower(rightBack);
     }
 
-    public static void launchBall(){
+    /*public static void launchBall(){
         Robot.stop();
         double curPower = launcher.getPower();
         double curTime = time.time();
@@ -132,7 +132,7 @@ class Robot {
             launchTime = curTime + 0.1;
         }
         launcher.setPower( curPower );
-    }
+    }*/
 
     public static void stop(){
         frontRight.setPower( 0 );

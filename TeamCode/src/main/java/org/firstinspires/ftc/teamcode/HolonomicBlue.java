@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Created by Steven on 10/15/2016.
  */
 @TeleOp( name = "HolonomicBlue" )
-@Disabled
 public class HolonomicBlue extends HolonomicRed {
     @Override
     protected void captureForwards(){
