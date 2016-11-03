@@ -38,7 +38,7 @@ class Robot {
         t.addData( "Left Back Motor Power", backLeft.getPower() );
         t.addData( "Right Back Motor Power", backRight.getPower() );
         t.addData( "Intake Power", intake.getPower() );
-        t.addData( "Launcher Power", launcher.getPower() );
+        //t.addData( "Launcher Power", launcher.getPower() );
 
         t.addData( "Servo Button Left", leftButton.getPosition() );
         t.addData( "Servo Button Right", rightButton.getPosition() );
@@ -149,7 +149,7 @@ class Robot {
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
-        if( colorLeft.red() > colorRight.red() ){
+        if( colorLeft.red() < colorRight.red() ){
             leftButton.setPosition( 1.0 );
         }else{
             rightButton.setPosition( 0.0 );
@@ -160,7 +160,7 @@ class Robot {
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
-        if( colorLeft.blue() > colorRight.blue() ){
+        if( colorLeft.blue() < colorRight.blue() ){
             leftButton.setPosition( 1.0 );
         }else {
             rightButton.setPosition( 0.0 );

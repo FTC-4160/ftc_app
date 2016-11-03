@@ -7,10 +7,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by Muskies on 10/6/2016.
  */
-@Autonomous( name = "Beacon Press Red" )
+@Autonomous( name = "RED BEACON CAPTURE" )
 public class AutonomousBeaconPressRed extends LinearOpMode {
-    protected int direction = 1;
-    protected void claim(){
+     void claim(){
         Robot.claimBeaconRed();
         sleep( 500 );
         Robot.resetButtonServos();
@@ -24,23 +23,23 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
         //move to the wall
         while( opModeIsActive() && time.seconds() < 4.5 ){
-            Robot.drive( -0.25, 0.25 * direction, 0 );
+            Robot.drive( -0.25, 0.25, 0 );
         }
         //disable gyro assistance
         Robot.toggleGyroAssist();
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            Robot.drive( -0.1, direction * 0.4, 0 );
+            Robot.drive( -0.1, 0.4, 0 );
         }
         claim();
         time.reset();
         //move off the line
         while( opModeIsActive() && time.seconds() < 2 ){
-            Robot.drive( -0.1, 0.4 * direction, 0 );
+            Robot.drive( -0.1, 0.4, 0 );
         }
         //drive to the second line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            Robot.drive( -0.1, direction * 0.4, 0 );
+            Robot.drive( -0.1, 0.4, 0 );
         }
         claim();
     }

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 /**
  * Created by Steven on 8/23/2016.
  */
-@TeleOp( name = "HolonomicRed" )
+@TeleOp( name = "RED" )
 public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     final GamepadEvents gamepadEvents = new GamepadEvents( this );
     State state = State.DRIVER_CONTROL;
