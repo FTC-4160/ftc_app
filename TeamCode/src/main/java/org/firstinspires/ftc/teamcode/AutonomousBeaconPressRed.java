@@ -46,6 +46,7 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
             move( -0.1, 0.4 );
         }
         claim();
+        Robot.stop();
     }
     @Override
     public void handleLoop(){

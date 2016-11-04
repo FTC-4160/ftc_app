@@ -42,6 +42,7 @@ public class AutonomousBeaconPressBlue extends LinearOpMode {
             Robot.drive(-0.1, -0.4, 0);
         }
         claim();
+        Robot.stop();
     }
 
     @Override
