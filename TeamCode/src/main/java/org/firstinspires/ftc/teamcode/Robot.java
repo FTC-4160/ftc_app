@@ -149,7 +149,7 @@ class Robot {
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
-        if( colorLeft.red() < colorRight.red() ){
+        if( colorLeft.red() > colorRight.red() ){
             leftButton.setPosition( 1.0 );
         }else{
             rightButton.setPosition( 0.0 );
@@ -160,7 +160,7 @@ class Robot {
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
-        if( colorLeft.blue() < colorRight.blue() ){
+        if( colorLeft.blue() > colorRight.blue() ){
             leftButton.setPosition( 1.0 );
         }else {
             rightButton.setPosition( 0.0 );
