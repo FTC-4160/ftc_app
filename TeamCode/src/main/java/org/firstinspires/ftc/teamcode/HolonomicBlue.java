@@ -8,19 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp( name = "BLUE" )
 public class HolonomicBlue extends HolonomicRed {
     @Override
-    protected void captureForwards(){
-        if( Robot.detectsLine() ){
-            Robot.claimBeaconBlue();
-        }else{
-            Robot.drive( -0.1, 0.4 , 0 );
-        }
-    }
-    @Override
-    protected void captureBackwards(){
-        if( Robot.detectsLine() ){
-            Robot.claimBeaconBlue();
-        }else{
-            Robot.drive( -0.1, -0.4, 0 );
-        }
+    public void init(){
+        Robot.init( hardwareMap, Robot.Alliance.BLUE );
     }
 }

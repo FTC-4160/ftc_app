@@ -10,15 +10,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous( name = "BLUE BEACON CAPTURE" )
 public class AutonomousBeaconPressBlue extends LinearOpMode {
     private void claim() {
-        Robot.claimBeaconBlue();
+        Robot.claimBeacon();
         sleep(1000);
         Robot.resetButtonServos();
         sleep(1000);
     }
 
+    protected void initRobot(){
+        Robot.init( hardwareMap, Robot.Alliance.BLUE );
+    }
+
     @Override
     public void runOpMode() {
-        Robot.init(hardwareMap);
+        initRobot();
+        Robot.init(hardwareMap, Robot.Alliance.BLUE );
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall

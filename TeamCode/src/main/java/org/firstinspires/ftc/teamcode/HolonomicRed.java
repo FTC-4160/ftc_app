@@ -13,7 +13,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     protected void captureForwards(){
         if( Robot.detectsLine() ){
-            Robot.claimBeaconRed();
+            Robot.claimBeacon();
         }else{
             Robot.drive( -0.1, 0.4 , 0 );
         }
@@ -21,7 +21,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     protected void captureBackwards(){
         if( Robot.detectsLine() ){
-            Robot.claimBeaconRed();
+            Robot.claimBeacon();
         }else{
             Robot.drive( -0.1, -0.4, 0 );
         }
@@ -57,7 +57,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     @Override
     public void init(){
-        Robot.init( hardwareMap );
+        Robot.init( hardwareMap, Robot.Alliance.RED );
     }
 
     @Override
@@ -83,8 +83,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
                 state = State.BEACON_CAPTURE_BACKWARDS;
                 break;
             case GAMEPAD1_X:
-                Robot.resetButtonServos();
-                state = State.DRIVER_CONTROL;
+                Robot.claimBeacon();
                 break;
             case GAMEPAD1_START:
                 Robot.toggleGyroAssist();

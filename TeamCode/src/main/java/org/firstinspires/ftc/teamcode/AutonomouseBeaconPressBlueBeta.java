@@ -9,11 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous( name = "BLUE BEACON CAPTURE BETA" )
 public class AutonomouseBeaconPressBlueBeta extends AutonomousBeaconPressRed {
     @Override
-    protected void claim(){
-        Robot.claimBeaconBlue();
-        sleep( 500 );
-        Robot.resetButtonServos();
-        sleep( 50 );
+    protected void initRobot(){
+        Robot.init( hardwareMap, Robot.Alliance.BLUE );
     }
 
     @Override

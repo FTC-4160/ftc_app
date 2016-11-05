@@ -32,15 +32,20 @@ class Robot {
     private static ElapsedTime time;
     private static double launchTime = 0;
     private static boolean isInitialized = false;
+    private static Alliance alliance;
 
     public static void addTelemetry( Telemetry t ){
         if( !isInitialized ){
             return;
         }
         t.addData( "Left Front Motor Power", frontLeft.getPower() );
+        t.addData( "Left Front Motor Position", frontLeft.getCurrentPosition() );
         t.addData( "Right Front Motor Power", frontRight.getPower() );
+        t.addData( "Right Front Motor Position", frontRight.getCurrentPosition() );
         t.addData( "Left Back Motor Power", backLeft.getPower() );
+        t.addData( "Left Back Motor Position", backLeft.getCurrentPosition() );
         t.addData( "Right Back Motor Power", backRight.getPower() );
+        t.addData( "Right Back Motor Position", backRight.getCurrentPosition() );
         t.addData( "Intake Power", intake.getPower() );
         t.addData( "Launcher Power", launcher.getPower() );
 
@@ -64,7 +69,8 @@ class Robot {
         gyroAssistEnabled = !gyroAssistEnabled;
     }
 
-    public static void init( HardwareMap hardwareMap ){
+    public static void init( HardwareMap hardwareMap, Alliance alliance ){
+        Robot.alliance = alliance;
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
         frontRight = hardwareMap.dcMotor.get( "frontRight" );
         backLeft = hardwareMap.dcMotor.get( "backLeft" );
@@ -152,7 +158,7 @@ class Robot {
         return rightLineDetector.getLightDetected() > LIGHT_THRESHOLD || leftLineDetector.getLightDetected() > LIGHT_THRESHOLD;
     }
 
-    public static void claimBeaconRed(){
+/*    public static void claimBeaconRed(){
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
@@ -161,9 +167,18 @@ class Robot {
         }else{
             rightButton.setPosition( 0.0 );
         }
+    }*/
+
+    public static void claimBeacon(){
+        Robot.drive( -0.25, 0, 0 );
+        if( alliance == Alliance.RED && colorLeft.red() > colorRight.red() || alliance == Alliance.BLUE && colorLeft.blue() > colorRight.blue() ){
+            leftButton.setPosition( 1.0 );
+        }else{
+            rightButton.setPosition( 0.0 );
+        }
     }
 
-    public static void claimBeaconBlue(){
+/*    public static void claimBeaconBlue(){
         //drive into the wall to ensure we can press the button
         Robot.drive( -0.25, 0, 0.0 );
         //press the button
@@ -172,7 +187,7 @@ class Robot {
         }else {
             rightButton.setPosition( 0.0 );
         }
-    }
+    }*/
 
     public static void resetButtonServos(){
         leftButton.setPosition( 0.0 );
@@ -186,4 +201,6 @@ class Robot {
         //round to the nearest 20th
         return Math.floor( Range.clip( input, -1, 1 ) * 20 ) * 0.05;
     }
+
+    enum Alliance { BLUE, RED }
 }
