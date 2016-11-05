@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class AutonomousBeaconPressBlue extends LinearOpMode {
     private void claim() {
         Robot.claimBeaconBlue();
-        sleep(500);
+        sleep(1000);
         Robot.resetButtonServos();
-        sleep(50);
+        sleep(1000);
     }
 
     @Override
@@ -48,7 +48,6 @@ public class AutonomousBeaconPressBlue extends LinearOpMode {
     @Override
     public void handleLoop() {
         Robot.addTelemetry(telemetry);
-        updateTelemetry(telemetry);
         super.handleLoop();
     }
 }
