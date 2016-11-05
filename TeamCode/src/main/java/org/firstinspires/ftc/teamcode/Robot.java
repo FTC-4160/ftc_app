@@ -31,8 +31,12 @@ class Robot {
     private static boolean gyroAssistEnabled = true;
     private static ElapsedTime time;
     private static double launchTime = 0;
+    private static boolean isInitialized = false;
 
     public static void addTelemetry( Telemetry t ){
+        if( !isInitialized ){
+            return;
+        }
         t.addData( "Left Front Motor Power", frontLeft.getPower() );
         t.addData( "Right Front Motor Power", frontRight.getPower() );
         t.addData( "Left Back Motor Power", backLeft.getPower() );
@@ -52,6 +56,7 @@ class Robot {
 
         t.addData( "Gyro Target", gyroTarget );
         t.addData( "Gyro Enabled", !gyroOff && gyroAssistEnabled );
+        t.update();
     }
 
     public static void toggleGyroAssist(){
@@ -96,6 +101,7 @@ class Robot {
         launcher = hardwareMap.dcMotor.get( "launcher" );
         launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
+        Robot.isInitialized = true;
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
