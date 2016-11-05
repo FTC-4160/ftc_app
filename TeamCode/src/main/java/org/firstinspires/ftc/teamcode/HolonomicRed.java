@@ -62,7 +62,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     @Override
     public void init_loop() {
-        telemetry.addData( "Gyro Calibration", Robot.gyro.isCalibrating() ? "Calibrating..." : "Complete" );
+        Robot.addTelemetry( telemetry );
     }
 
     @Override

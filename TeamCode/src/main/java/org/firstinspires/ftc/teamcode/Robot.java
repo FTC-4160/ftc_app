@@ -42,7 +42,7 @@ class Robot {
         t.addData( "Left Back Motor Power", backLeft.getPower() );
         t.addData( "Right Back Motor Power", backRight.getPower() );
         t.addData( "Intake Power", intake.getPower() );
-        //t.addData( "Launcher Power", launcher.getPower() );
+        t.addData( "Launcher Power", launcher.getPower() );
 
         t.addData( "Servo Button Left", leftButton.getPosition() );
         t.addData( "Servo Button Right", rightButton.getPosition() );
@@ -53,6 +53,7 @@ class Robot {
         t.addData( "More Blue", colorLeft.blue() > colorRight.blue() ? "Left" : "Right" );
         t.addData( "ODS Left", leftLineDetector.getLightDetected() );
         t.addData( "ODS Right", rightLineDetector.getLightDetected() );
+        t.addData( "ODS Detects Line", detectsLine() );
 
         t.addData( "Gyro Target", gyroTarget );
         t.addData( "Gyro Enabled", !gyroOff && gyroAssistEnabled );
