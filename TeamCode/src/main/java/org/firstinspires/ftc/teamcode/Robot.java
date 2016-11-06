@@ -4,6 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceS
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsUsbDcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -105,8 +106,10 @@ class Robot {
         leftLineDetector.enableLed( true );
         intake = hardwareMap.dcMotor.get( "intake" );
         intake.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
+        intake.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
         launcher = hardwareMap.dcMotor.get( "launcher" );
         launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
+        launcher.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
     }
