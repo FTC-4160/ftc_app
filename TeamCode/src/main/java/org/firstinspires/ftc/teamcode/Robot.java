@@ -194,7 +194,7 @@ class Robot {
         rightButton.setPosition( 1.0 );
     }
 
-    private static double zeroRangeClip( double input ){
+    public static double zeroRangeClip( double input ){
         if( Math.abs( input ) < 0.1 ){
             return 0.0;
         }
