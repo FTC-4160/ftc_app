@@ -202,7 +202,7 @@ class Robot {
             return 0.0;
         }
         //round to the nearest 20th
-        return Math.floor( Range.clip( input, -1, 1 ) * 20 ) * 0.05;
+        return (int)(Range.clip( input, -1, 1 ) * 20) * 0.05;
     }
 
     enum Alliance { BLUE, RED }
