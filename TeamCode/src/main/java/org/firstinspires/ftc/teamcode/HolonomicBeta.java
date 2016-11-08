@@ -32,8 +32,8 @@ public class HolonomicBeta extends OpMode {
     public void drive( double x, double y, double turn ){
         double magnitude = Math.hypot( x, y ); //get the magnitude of the vector
 
-        double unitx = x * ANGLE_45 - y * ANGLE_45; //find the new x coordinate on the unit circle
-        double unity = x * ANGLE_45 + y * ANGLE_45; //find the new y coordinate on the unit circle
+        double unitx = x * ANGLE_45 - y * -ANGLE_45; //find the new x coordinate on the unit circle
+        double unity = x * -ANGLE_45 + y * ANGLE_45; //find the new y coordinate on the unit circle
 
         double scale = Math.abs( magnitude / Math.max( unitx, unity ) ); //figure out how to scale for if the magnitude is 1 a motor is always 1
 

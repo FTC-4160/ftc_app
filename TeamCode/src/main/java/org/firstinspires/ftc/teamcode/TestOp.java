@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class TestOp extends OpMode {
     @Override
     public void init() {
-        Robot.init(hardwareMap);
+        Robot.init(hardwareMap, Robot.Alliance.RED);
     }
 
     @Override

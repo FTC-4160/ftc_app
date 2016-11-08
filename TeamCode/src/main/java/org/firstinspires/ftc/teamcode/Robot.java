@@ -107,6 +107,7 @@ class Robot {
         intake = hardwareMap.dcMotor.get( "intake" );
         intake.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
         intake.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
+        intake.setDirection( DcMotor.Direction.REVERSE );
         launcher = hardwareMap.dcMotor.get( "launcher" );
         launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
         launcher.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
