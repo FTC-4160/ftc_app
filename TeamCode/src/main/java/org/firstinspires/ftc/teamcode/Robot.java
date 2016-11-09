@@ -127,7 +127,7 @@ class Robot {
         double unity = -drivex * ANGLE_45 + drivey * ANGLE_45;
         //find the scale factor which will allow one motor to run at magnitude
         //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
-        double scale = Math.abs( magnitude / Math.max( unitx, unity ) );
+        double scale = Math.abs( magnitude / Math.max( Math.abs( unitx ), Math.abs( unity ) ) );
 
         //clip & round the final values, subtracting the turn factor
         double motorx = zeroRangeClip( unitx * scale - turn );
