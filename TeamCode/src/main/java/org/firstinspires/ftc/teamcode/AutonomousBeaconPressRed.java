@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by Muskies on 10/6/2016.
  */
+@SuppressWarnings("WeakerAccess")
 @Autonomous( name = "RED BEACON CAPTURE" )
 public class AutonomousBeaconPressRed extends LinearOpMode {
      private void claim(){
@@ -16,11 +17,11 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
         sleep( 50 );
     }
 
-    protected void move(double x, double y ){
+    void move(double x, double y){
         Robot.drive( x, y, 0 );
     }
 
-    protected void initRobot(){
+    void initRobot(){
         Robot.init( hardwareMap, Robot.Alliance.RED );
     }
 

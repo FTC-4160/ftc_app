@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 @TeleOp( name = "RED" )
 public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
-    final GamepadEvents gamepadEvents = new GamepadEvents( this );
-    State state = State.DRIVER_CONTROL;
+    private final GamepadEvents gamepadEvents = new GamepadEvents( this );
+    private State state = State.DRIVER_CONTROL;
 
-    protected void captureForwards(){
+    private void captureForwards(){
         if( Robot.detectsLine() ){
             Robot.claimBeacon();
         }else{
@@ -19,7 +19,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         }
     }
 
-    protected void captureBackwards(){
+    private void captureBackwards(){
         if( Robot.detectsLine() ){
             Robot.claimBeacon();
         }else{

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 /**
  * Created by Steven on 11/6/2016.
  */
+@SuppressWarnings("WeakerAccess")
 @TeleOp( name="BETA DRIVE" )
 public class HolonomicBeta extends OpMode {
     @Override
@@ -23,13 +24,13 @@ public class HolonomicBeta extends OpMode {
         double drivex = Math.pow( gamepad1.right_stick_x, 3 );
         double drivey = Math.pow( -gamepad1.right_stick_y, 3 );
         double turn = gamepad1.right_trigger - gamepad1.left_trigger;
-        drive( drivex, drivey, turn  );
+        drive( drivex, drivey);
         Robot.addTelemetry( telemetry );
     }
 
-    private double ANGLE_45 = Math.sqrt( 2 ) / 2;
+    private final double ANGLE_45 = Math.sqrt( 2 ) / 2;
 
-    public void drive( double x, double y, double turn ){
+    private void drive(double x, double y){
         double magnitude = Math.hypot( x, y ); //get the magnitude of the vector
 
         double unitx = x * ANGLE_45 - y * -ANGLE_45; //find the new x coordinate on the unit circle

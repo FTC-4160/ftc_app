@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Created by Muskies on 9/20/2016.
  */
 
+@SuppressWarnings("WeakerAccess")
 @TeleOp( name = "TestOp" )
 @Disabled
 public class TestOp extends OpMode {

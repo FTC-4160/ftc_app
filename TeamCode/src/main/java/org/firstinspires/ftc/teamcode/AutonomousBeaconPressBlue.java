@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by Steven on 10/15/2016.
  */
+@SuppressWarnings("WeakerAccess")
 @Autonomous( name = "BLUE BEACON CAPTURE" )
 public class AutonomousBeaconPressBlue extends LinearOpMode {
     private void claim() {
@@ -16,7 +17,7 @@ public class AutonomousBeaconPressBlue extends LinearOpMode {
         sleep(1000);
     }
 
-    protected void initRobot(){
+    private void initRobot(){
         Robot.init( hardwareMap, Robot.Alliance.BLUE );
     }
 

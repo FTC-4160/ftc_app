@@ -4,7 +4,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceS
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsUsbDcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -17,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 /**
  * Created by Steven on 9/10/2016.
  */
+@SuppressWarnings("WeakerAccess")
 class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight, launcher, intake;
@@ -33,7 +33,7 @@ class Robot {
     private static double launchTime = 0;
     private static boolean isInitialized = false;
     private static Alliance alliance;
-    private static double ANGLE_45 = Math.sqrt( 2 ) / 2;
+    private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
 
     public static void addTelemetry( Telemetry t ){
         if( !isInitialized ){
