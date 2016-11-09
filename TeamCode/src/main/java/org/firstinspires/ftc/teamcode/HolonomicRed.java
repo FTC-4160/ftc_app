@@ -29,8 +29,8 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
     @Override
     public void loop(){
-        double drivey = -gamepad1.right_stick_y;
-        double drivex = gamepad1.right_stick_x;
+        double drivey = Math.pow( -gamepad1.right_stick_y, 3 );
+        double drivex = Math.pow( gamepad1.right_stick_x, 3 );
         double turn = gamepad1.right_trigger - gamepad1.left_trigger;
 
         Robot.intake.setPower( gamepad1.left_stick_y );

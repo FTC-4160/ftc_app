@@ -28,12 +28,12 @@ class Robot {
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
     static final double LIGHT_THRESHOLD = 0.075;
     static int gyroTarget = 0;
-    private static boolean gyroOff;
     private static boolean gyroAssistEnabled = true;
     private static ElapsedTime time;
     private static double launchTime = 0;
     private static boolean isInitialized = false;
     private static Alliance alliance;
+    private static double ANGLE_45 = Math.sqrt( 2 ) / 2;
 
     public static void addTelemetry( Telemetry t ){
         if( !isInitialized ){
@@ -62,7 +62,7 @@ class Robot {
         t.addData( "ODS Detects Line", detectsLine() );
 
         t.addData( "Gyro Target", gyroTarget );
-        t.addData( "Gyro Enabled", !gyroOff && gyroAssistEnabled );
+        t.addData( "Gyro Enabled", gyroAssistEnabled );
         t.update();
     }
 
@@ -116,24 +116,27 @@ class Robot {
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
-        if (Math.abs(turn) < 0.1) {
-            if( gyroOff || !gyroAssistEnabled ){
-                gyroTarget = gyro.getIntegratedZValue();
-            }
+        if (Math.abs(turn) < 0.1 && gyroAssistEnabled) {
             turn -= ((gyro.getIntegratedZValue() - gyroTarget) * 0.01);
-            gyroOff = false;
-        } else {
-            gyroOff = true;
         }
-        double rightFront = zeroRangeClip( drivey - drivex - turn );
-        double leftFront = zeroRangeClip( -drivey - drivex - turn );
-        double rightBack = zeroRangeClip( drivey + drivex - turn );
-        double leftBack = zeroRangeClip( -drivey + drivex - turn );
+        //get the magnitude of the vector
+        //equivalent to sqrt( x^2 + y^2 )
+        double magnitude = Math.hypot( drivex, drivey );
+        //get the rotated point
+        double unitx = drivex * ANGLE_45 + drivey * ANGLE_45;
+        double unity = -drivex * ANGLE_45 + drivey * ANGLE_45;
+        //find the scale factor which will allow one motor to run at magnitude
+        //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
+        double scale = Math.abs( magnitude / Math.max( unitx, unity ) );
 
-        frontLeft.setPower(leftFront);
-        frontRight.setPower(rightFront);
-        backLeft.setPower(leftBack);
-        backRight.setPower(rightBack);
+        //clip & round the final values, subtracting the turn factor
+        double motorx = zeroRangeClip( unitx * scale - turn );
+        double motory = zeroRangeClip( unity * scale - turn );
+
+        frontLeft.setPower( -motorx );
+        backRight.setPower( motorx );
+        frontRight.setPower( motory );
+        backLeft.setPower( -motory );
     }
 
     /*public static void launchBall(){

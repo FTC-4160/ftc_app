@@ -28,23 +28,23 @@ public class AutonomousBeaconPressBlue extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
         //move to the wall
         while( opModeIsActive() && time.seconds() < 4.5 ) {
-            Robot.drive(-0.25, -0.25, 0);
+            Robot.drive(-0.5, -0.5, 0);
         }
         //disable gyro assistance
         Robot.toggleGyroAssist();
         //drive to the line
         while (opModeIsActive() && !Robot.detectsLine()) {
-            Robot.drive(-0.1, -0.4, 0);
+            Robot.drive(-0.1, -0.8, 0);
         }
         claim();
         time.reset();
         //move off the line
         while (opModeIsActive() && time.seconds() < 2) {
-            Robot.drive(-0.1, -0.4, 0);
+            Robot.drive(-0.1, -0.8, 0);
         }
         //drive to the second line
         while (opModeIsActive() && !Robot.detectsLine()) {
-            Robot.drive(-0.1, -0.4, 0);
+            Robot.drive(-0.1, -0.8, 0);
         }
         claim();
         Robot.stop();
