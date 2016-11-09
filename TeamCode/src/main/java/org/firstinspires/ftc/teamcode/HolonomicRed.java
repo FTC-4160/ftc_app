@@ -33,7 +33,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         double drivex = Math.pow( gamepad1.right_stick_x, 3 );
         double turn = gamepad1.right_trigger - gamepad1.left_trigger;
 
-        Robot.intake.setPower( gamepad1.left_stick_y );
+        Robot.intake.setPower( gamepad2.left_stick_y );
 
         if( Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
             state = State.DRIVER_CONTROL;
@@ -68,6 +68,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     @Override
     public void onButtonPress(GamepadEvents.Button button) {
         switch( button ) {
+            //GAMEPAD1 Buttons
             case GAMEPAD1_LEFT_BUMPER:
                 Robot.gyroTarget -= 20;
                 break;
@@ -82,14 +83,18 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
                 Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_BACKWARDS;
                 break;
-            case GAMEPAD1_X:
-                Robot.claimBeacon();
-                break;
             case GAMEPAD1_START:
                 Robot.toggleGyroAssist();
                 break;
             case GAMEPAD1_B:
                 //state = State.BALL_LAUNCH;
+                break;
+            //GAMEPAD2 values
+            case GAMEPAD2_A:
+                Robot.claimBeacon();
+                break;
+            case GAMEPAD2_Y:
+                Robot.resetButtonServos();
                 break;
         }
     }
