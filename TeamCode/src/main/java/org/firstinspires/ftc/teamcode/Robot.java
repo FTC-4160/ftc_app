@@ -130,13 +130,13 @@ class Robot {
         double scale = Math.abs( magnitude / Math.max( Math.abs( unitx ), Math.abs( unity ) ) );
 
         //clip & round the final values, subtracting the turn factor
-        double motorx = zeroRangeClip( unitx * scale - turn );
-        double motory = zeroRangeClip( unity * scale - turn );
+        double motorx = unitx * scale;
+        double motory = unity * scale ;
 
-        frontLeft.setPower( -motorx );
-        backRight.setPower( motorx );
-        frontRight.setPower( motory );
-        backLeft.setPower( -motory );
+        frontLeft.setPower( zeroRangeClip( -motorx - turn ) );
+        backRight.setPower( zeroRangeClip( motorx - turn ) );
+        frontRight.setPower( zeroRangeClip( motory - turn ) );
+        backLeft.setPower( zeroRangeClip( -motory - turn ) );
     }
 
     /*public static void launchBall(){
