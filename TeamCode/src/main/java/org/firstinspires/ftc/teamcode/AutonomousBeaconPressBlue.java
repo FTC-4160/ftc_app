@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 @SuppressWarnings("WeakerAccess")
 @Autonomous( name = "BLUE BEACON CAPTURE" )
+@Disabled
 public class AutonomousBeaconPressBlue extends LinearOpMode {
     private void claim() {
         Robot.claimBeacon();

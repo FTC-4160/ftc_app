@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.hitechnic.HiTechnicNxtUltrasonicSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -109,8 +111,11 @@ class Robot {
         intake.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
         intake.setDirection( DcMotor.Direction.REVERSE );
         launcher = hardwareMap.dcMotor.get( "launcher" );
-        launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.FLOAT );
-        launcher.setMode( DcMotor.RunMode.RUN_WITHOUT_ENCODER );
+        launcher.setZeroPowerBehavior( DcMotor.ZeroPowerBehavior.BRAKE );
+        launcher.setMaxSpeed( NEVEREST_TICKS_PER_SECOND );
+        launcher.setMode( DcMotor.RunMode.RUN_TO_POSITION );
+        launcher.setPower( 1.0 );
+        launcher.setTargetPosition( launcher.getCurrentPosition() );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
     }
@@ -139,20 +144,10 @@ class Robot {
         backLeft.setPower( zeroRangeClip( -motory - turn ) );
     }
 
-    /*public static void launchBall(){
+    public static void launchBall(){
         Robot.stop();
-        double curPower = launcher.getPower();
-        double curTime = time.time();
-        if( curTime > launchTime ){
-            if( curPower < 1.0 ) {
-                curPower += 0.1;
-            }else{
-                feeder.setPosition( 0 );
-            }
-            launchTime = curTime + 0.1;
-        }
-        launcher.setPower( curPower );
-    }*/
+        launcher.setTargetPosition( launcher.getCurrentPosition() + 1140 );
+    }
 
     public static void stop(){
         frontRight.setPower( 0 );

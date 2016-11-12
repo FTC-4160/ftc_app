@@ -86,15 +86,15 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
             case GAMEPAD1_START:
                 Robot.toggleGyroAssist();
                 break;
-            case GAMEPAD1_B:
-                //state = State.BALL_LAUNCH;
-                break;
             //GAMEPAD2 values
             case GAMEPAD2_A:
                 Robot.claimBeacon();
                 break;
             case GAMEPAD2_Y:
                 Robot.resetButtonServos();
+                break;
+            case GAMEPAD2_B:
+                Robot.launchBall();
                 break;
         }
     }

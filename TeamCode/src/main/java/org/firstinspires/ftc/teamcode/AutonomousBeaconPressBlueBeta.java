@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  */
 
 @Autonomous( name = "BLUE BEACON CAPTURE BETA" )
-public class AutonomouseBeaconPressBlueBeta extends AutonomousBeaconPressRed {
+public class AutonomousBeaconPressBlueBeta extends AutonomousBeaconPressRed {
     @Override
     protected void initRobot(){
         Robot.init( hardwareMap, Robot.Alliance.BLUE );
