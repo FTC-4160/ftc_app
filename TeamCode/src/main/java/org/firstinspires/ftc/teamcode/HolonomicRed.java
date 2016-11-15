@@ -35,10 +35,10 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
         Robot.intake.setPower( gamepad2.left_stick_y );
 
-        if( Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
+        /*if( Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
             state = State.DRIVER_CONTROL;
             Robot.resetButtonServos();
-        }
+        }*/
 
         switch( state ){
             case DRIVER_CONTROL: Robot.drive( drivex, drivey, turn ); break;
