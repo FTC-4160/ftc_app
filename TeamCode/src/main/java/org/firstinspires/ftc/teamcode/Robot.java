@@ -122,7 +122,12 @@ class Robot {
 
     public static void drive( double drivex, double drivey, double turn ) {
 
-        //no gyro assist whatsover because this is being stupid.
+        //gyro assistance
+        if( gyroAssistEnabled && Math.abs( turn ) < 0.1 ){
+            turn -= gyro.getIntegratedZValue() - gyroTarget;
+        }else{
+            gyroTarget = gyro.getIntegratedZValue();
+        }
 
         //get the magnitude of the vector
         //equivalent to sqrt( x^2 + y^2 )
