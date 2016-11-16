@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight, launcher, intake;
-    static Servo leftButton, rightButton, feeder;
+    static Servo leftButton, rightButton, feeder, heartbeat;
     static ModernRoboticsI2cGyro gyro;
     static ModernRoboticsI2cColorSensor colorRight, colorLeft;
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
@@ -118,6 +118,7 @@ class Robot {
         launcher.setTargetPosition( launcher.getCurrentPosition() );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
+        heartbeat = hardwareMap.servo.get( "heartbeat" );
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
@@ -207,6 +208,10 @@ class Robot {
         }
         //round to the nearest 20th
         return (int)(Range.clip( input, -1, 1 ) * 10) * 0.1;
+    }
+
+    public static void beat(){
+        heartbeat.setPosition( time.time() - Math.floor( time.time() ) );
     }
 
     enum Alliance { BLUE, RED }

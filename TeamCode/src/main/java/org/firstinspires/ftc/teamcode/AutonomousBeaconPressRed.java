@@ -28,6 +28,10 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
     @Override
     public void runOpMode() {
         initRobot();
+        while( !isStarted() ){
+            Robot.beat();
+            idle();
+        }
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
