@@ -28,10 +28,6 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
     @Override
     public void runOpMode() {
         initRobot();
-        while( !isStarted() ){
-            Robot.beat();
-            idle();
-        }
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
@@ -42,23 +38,26 @@ public class AutonomousBeaconPressRed extends LinearOpMode {
         Robot.toggleGyroAssist();
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            move( -0.1, 0.8 );
+            move( -0.1, 0.5 );
         }
         claim();
         time.reset();
         //move off the line
         while( opModeIsActive() && time.seconds() < 2 ){
-            move( -0.1, 0.8 );
+            move( -0.1, 0.5 );
         }
         //drive to the second line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            move( -0.1, 0.8 );
+            move( -0.1, 0.5 );
         }
         claim();
+        move( 0.5, 0 );
+        sleep( 250 );
         Robot.stop();
     }
     @Override
     public void handleLoop(){
+        Robot.beat();
         Robot.addTelemetry( telemetry );
         updateTelemetry( telemetry );
         super.handleLoop();

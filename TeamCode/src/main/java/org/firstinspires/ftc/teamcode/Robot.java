@@ -124,11 +124,13 @@ class Robot {
     public static void drive( double drivex, double drivey, double turn ) {
 
         //gyro assistance
+        /*
         if( gyroAssistEnabled && Math.abs( turn ) < 0.1 ){
             turn -= gyro.getIntegratedZValue() - gyroTarget;
         }else{
             gyroTarget = gyro.getIntegratedZValue();
         }
+        */
 
         //get the magnitude of the vector
         //equivalent to sqrt( x^2 + y^2 )
@@ -211,7 +213,11 @@ class Robot {
     }
 
     public static void beat(){
-        heartbeat.setPosition( time.time() - Math.floor( time.time() ) );
+        heartbeat.setPosition( toNearestTenth(time.time() - Math.floor( time.time() )) );
+    }
+
+    private static double toNearestTenth( double input ){
+        return 0.1 * (int)(input * 10);
     }
 
     enum Alliance { BLUE, RED }
