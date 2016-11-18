@@ -121,6 +121,30 @@ class Robot {
         heartbeat = hardwareMap.servo.get( "heartbeat" );
     }
 
+    public static void driveFieldOriented( double drivex, double drivey, double turn ){
+        double target = Math.toRadians( (gyroTarget + 45)%360 );
+
+        double magnitude = Math.hypot( drivex, drivey );
+        //get the rotated point
+        double unitx = drivex * Math.cos( target ) + drivey * Math.sin( target );
+        double unity = -drivex * Math.sin( target ) + drivey * Math.cos( target );
+        //find the scale factor which will allow one motor to run at magnitude
+        //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
+        double scale = 1.0;
+        if( Math.abs( drivex ) + Math.abs( drivey ) > 0.0 ) {
+            scale = Math.abs(magnitude / Math.max(Math.abs(unitx), Math.abs(unity)));
+        }
+
+        //clip & round the final values, subtracting the turn factor
+        double motorx = unitx * scale;
+        double motory = unity * scale ;
+
+        frontLeft.setPower( zeroRangeClip( -motorx - turn ) );
+        backRight.setPower( zeroRangeClip( motorx - turn ) );
+        frontRight.setPower( zeroRangeClip( motory - turn ) );
+        backLeft.setPower( zeroRangeClip( -motory - turn ) );
+    }
+
     public static void drive( double drivex, double drivey, double turn ) {
 
         //gyro assistance
