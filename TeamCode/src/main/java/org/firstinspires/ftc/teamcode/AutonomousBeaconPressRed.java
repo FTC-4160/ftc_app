@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class AutonomousBeaconPressRed extends LinearOpMode {
      private void claim(){
         Robot.claimBeacon();
-        sleep( 500 );
+        sleep( 2500 );
         Robot.resetButtonServos();
-        sleep( 50 );
+        sleep( 1000 );
     }
 
     void move(double x, double y){
