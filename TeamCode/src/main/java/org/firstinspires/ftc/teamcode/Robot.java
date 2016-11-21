@@ -165,7 +165,8 @@ class Robot {
         //find the scale factor which will allow one motor to run at magnitude
         //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
         double scale = 1.0;
-        if( Math.abs( drivex ) + Math.abs( drivey ) > 0.0 ) {
+
+        if( Math.abs( drivex ) + Math.abs( drivey ) > 0.1 ) {
             scale = Math.abs(magnitude / Math.max(Math.abs(unitx), Math.abs(unity)));
         }
 
@@ -196,7 +197,7 @@ class Robot {
     }
 
     public static void claimBeacon(){
-        Robot.drive( -0.25, 0, 0 );
+        Robot.drive( -0.5, 0, 0 );
         if( alliance == Alliance.RED && colorLeft.red() > colorRight.red() || alliance == Alliance.BLUE && colorLeft.blue() > colorRight.blue() ){
             leftButton.setPosition( 1.0 );
         }else{
