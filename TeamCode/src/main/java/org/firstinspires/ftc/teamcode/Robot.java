@@ -7,7 +7,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceS
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -186,6 +185,31 @@ class Robot {
         backLeft.setPower( zeroRangeClip( -motory - turn ) );
     }
 
+    public static void drive_straight_gyro( double drivex, double drivey ){
+        double turn = (gyro.getIntegratedZValue() - gyroTarget)* 0.01;
+
+        double magnitude = Math.hypot( drivex, drivey );
+        //get the rotated point
+        double unitx = drivex * ANGLE_45 + drivey * ANGLE_45;
+        double unity = -drivex * ANGLE_45 + drivey * ANGLE_45;
+        //find the scale factor which will allow one motor to run at magnitude
+        //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
+        double scale = 1.0;
+
+        if( Math.abs( drivex ) + Math.abs( drivey ) > 0.1 ) {
+            scale = Math.abs(magnitude / Math.max(Math.abs(unitx), Math.abs(unity)));
+        }
+
+        //clip & round the final values, subtracting the turn factor
+        double motorx = unitx * scale;
+        double motory = unity * scale;
+
+        frontLeft.setPower( zeroRangeClip( -motorx - turn ) );
+        backRight.setPower( zeroRangeClip( motorx - turn ) );
+        frontRight.setPower( zeroRangeClip( motory - turn ) );
+        backLeft.setPower( zeroRangeClip( -motory - turn ) );
+    }
+
     public static void launchBall(){
         Robot.stop();
         launcher.setTargetPosition( launcher.getCurrentPosition() + 1140 );
@@ -225,6 +249,9 @@ class Robot {
     }
 
     public static void beat(){
+        if( !isInitialized ){
+            return;
+        }
         heartbeat.setPower( toNearestTenth(time.time() % 1) );
     }
 

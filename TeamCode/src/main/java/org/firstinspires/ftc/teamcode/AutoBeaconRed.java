@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 @SuppressWarnings("WeakerAccess")
 @Autonomous( name = "RED BEACON CAPTURE" )
-public class AutonomousBeaconPressRed extends LinearOpMode {
+public class AutoBeaconRed extends LinearOpMode {
      private void claim(){
         Robot.claimBeacon();
         sleep( 2500 );

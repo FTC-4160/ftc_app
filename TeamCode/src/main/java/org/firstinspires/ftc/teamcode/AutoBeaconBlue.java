@@ -6,8 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * Created by Steven on 11/3/2016.
  */
 
-@Autonomous( name = "BLUE BEACON CAPTURE BETA" )
-public class AutonomousBeaconPressBlueBeta extends AutonomousBeaconPressRed {
+@SuppressWarnings("WeakerAccess")
+@Autonomous( name = "BLUE BEACON CAPTURE" )
+public class AutoBeaconBlue extends AutoBeaconRed {
     @Override
     protected void initRobot(){
         Robot.init( hardwareMap, Robot.Alliance.BLUE );
