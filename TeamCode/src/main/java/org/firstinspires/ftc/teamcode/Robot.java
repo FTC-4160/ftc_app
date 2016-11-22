@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.speech.tts.TextToSpeech;
+
 import com.qualcomm.hardware.hitechnic.HiTechnicNxtUltrasonicSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -22,7 +25,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight, launcher, intake;
-    static Servo leftButton, rightButton, feeder, heartbeat;
+    static Servo leftButton, rightButton, feeder;
+    static CRServo heartbeat;
+    static HiTechnicNxtUltrasonicSensor ultrasonicSensor;
     static ModernRoboticsI2cGyro gyro;
     static ModernRoboticsI2cColorSensor colorRight, colorLeft;
     static ModernRoboticsAnalogOpticalDistanceSensor leftLineDetector, rightLineDetector;
@@ -30,17 +35,20 @@ class Robot {
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
     static final double LIGHT_THRESHOLD = 0.075;
     static int gyroTarget = 0;
+    private static TextToSpeech tts;
     private static boolean gyroAssistEnabled = true;
     private static ElapsedTime time;
     private static double launchTime = 0;
     private static boolean isInitialized = false;
     private static Alliance alliance;
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
+    private static boolean ttsInitialized = false;
 
     public static void addTelemetry( Telemetry t ){
         if( !isInitialized ){
             return;
         }
+        t.addData( "ttsInitialized", ttsInitialized );
         t.addData( "Left Front Motor Power", frontLeft.getPower() );
         t.addData( "Left Front Motor Position", frontLeft.getCurrentPosition() );
         t.addData( "Right Front Motor Power", frontRight.getPower() );
@@ -65,6 +73,8 @@ class Robot {
 
         t.addData( "Gyro Target", gyroTarget );
         t.addData( "Gyro Enabled", gyroAssistEnabled );
+
+        t.addData( "Ultrasonic Level", ultrasonicSensor.getUltrasonicLevel() );
         t.update();
     }
 
@@ -73,6 +83,7 @@ class Robot {
     }
 
     public static void init( HardwareMap hardwareMap, Alliance alliance ){
+        tts = new TextToSpeech( hardwareMap.appContext, new Listener() );
         Robot.alliance = alliance;
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
         frontRight = hardwareMap.dcMotor.get( "frontRight" );
@@ -118,16 +129,21 @@ class Robot {
         launcher.setTargetPosition( launcher.getCurrentPosition() );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
-        heartbeat = hardwareMap.servo.get( "heartbeat" );
+        heartbeat = hardwareMap.crservo.get( "heartbeat" );
+        ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
+    }
+
+    public static void setGyroTarget(){
+        gyroTarget = gyro.getHeading();
     }
 
     public static void driveFieldOriented( double drivex, double drivey, double turn ){
-        double target = Math.toRadians( (gyroTarget + 45)%360 );
+        double θ = Math.toRadians( gyro.getHeading() - gyroTarget + 45 );
 
         double magnitude = Math.hypot( drivex, drivey );
         //get the rotated point
-        double unitx = drivex * Math.cos( target ) + drivey * Math.sin( target );
-        double unity = -drivex * Math.sin( target ) + drivey * Math.cos( target );
+        double unitx = drivex * Math.cos( θ ) + drivey * Math.sin( θ );
+        double unity = -drivex * Math.sin( θ ) + drivey * Math.cos( θ );
         //find the scale factor which will allow one motor to run at magnitude
         //this way we can get full power at angles, ex: 45 degrees would be (1, 1) not (sqrt(2)/2, sqrt(2)/2)
         double scale = 1.0;
@@ -146,16 +162,6 @@ class Robot {
     }
 
     public static void drive( double drivex, double drivey, double turn ) {
-
-        //gyro assistance
-        /*
-        if( gyroAssistEnabled && Math.abs( turn ) < 0.1 ){
-            turn -= gyro.getIntegratedZValue() - gyroTarget;
-        }else{
-            gyroTarget = gyro.getIntegratedZValue();
-        }
-        */
-
         //get the magnitude of the vector
         //equivalent to sqrt( x^2 + y^2 )
         double magnitude = Math.hypot( drivex, drivey );
@@ -215,15 +221,23 @@ class Robot {
             return 0.0;
         }
         //round to the nearest 20th
-        return (int)(Range.clip( input, -1, 1 ) * 10) * 0.1;
+        return toNearestTenth( Range.clip( input, -1, 1 ) );
     }
 
     public static void beat(){
-        heartbeat.setPosition( toNearestTenth(time.time() - Math.floor( time.time() )) );
+        heartbeat.setPower( toNearestTenth(time.time() % 1) );
     }
 
     private static double toNearestTenth( double input ){
-        return 0.1 * (int)(input * 10);
+        return 0.1 * (int)(input * 10 + 0.5);
+    }
+
+    private static class Listener implements TextToSpeech.OnInitListener {
+        @Override
+        public void onInit(int status) {
+            ttsInitialized = true;
+            tts.speak( "Initialization Complete", TextToSpeech.QUEUE_FLUSH, null );
+        }
     }
 
     enum Alliance { BLUE, RED }
