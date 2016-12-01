@@ -34,14 +34,26 @@ class Robot {
     static final int NEVEREST_TICKS_PER_SECOND = 2240;
     static final double LIGHT_THRESHOLD = 0.075;
     static int gyroTarget = 0;
-    private static TextToSpeech tts;
+    public static TextToSpeech tts;
     private static boolean gyroAssistEnabled = true;
     private static ElapsedTime time;
-    private static double launchTime = 0;
     private static boolean isInitialized = false;
     private static Alliance alliance;
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
     private static boolean ttsInitialized = false;
+    private static boolean hasInformedOfInit = false;
+    public static final int ULTRASONIC_TARGET = 12;
+
+    public static void say( String text ){
+        tts.speak( text, TextToSpeech.QUEUE_FLUSH, null );
+    }
+
+    public static void sayInitData(){
+        if( !hasInformedOfInit && isInitialized && !gyro.isCalibrating() ){
+            say( "Initialization Complete" );
+            hasInformedOfInit = true;
+        }
+    }
 
     public static void addTelemetry( Telemetry t ){
         if( !isInitialized ){
@@ -263,7 +275,6 @@ class Robot {
         @Override
         public void onInit(int status) {
             ttsInitialized = true;
-            tts.speak( "Initialization Complete", TextToSpeech.QUEUE_FLUSH, null );
         }
     }
 

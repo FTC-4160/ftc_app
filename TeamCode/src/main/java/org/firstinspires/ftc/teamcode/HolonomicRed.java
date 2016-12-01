@@ -45,7 +45,6 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
             case BEACON_CAPTURE_FORWARDS: captureForwards(); break;
             case BEACON_CAPTURE_BACKWARDS: captureBackwards(); break;
             case FIELD_CONTROL: Robot.driveFieldOriented( drivex, drivey, turn * 0.5 );
-            //case BALL_LAUNCH: Robot.launchBall(); break;
         }
 
         gamepadEvents.handleEvents();
@@ -66,6 +65,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     public void init_loop() {
         Robot.addTelemetry( telemetry );
         Robot.beat();
+        Robot.sayInitData();
     }
 
     @Override
@@ -87,7 +87,12 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
                 state = State.BEACON_CAPTURE_BACKWARDS;
                 break;
             case GAMEPAD1_START:
-                //Robot.toggleGyroAssist();
+                if( this.state == State.FIELD_CONTROL ){
+                    state = State.DRIVER_CONTROL;
+                }else if( state == State.DRIVER_CONTROL ){
+                    state = State.DRIVER_CONTROL;
+                }
+                Robot.say( "Mode is now " + state.toString() );
                 state = State.FIELD_CONTROL;
                 break;
             //GAMEPAD2 values
@@ -108,6 +113,5 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         FIELD_CONTROL,
         BEACON_CAPTURE_FORWARDS,
         BEACON_CAPTURE_BACKWARDS,
-        //BALL_LAUNCH,
     }
 }

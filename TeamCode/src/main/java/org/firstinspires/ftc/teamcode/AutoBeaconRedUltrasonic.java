@@ -5,11 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by Muskies on 10/6/2016.
+ * Created by Muskies on 12/1/2016.
  */
-@Autonomous( name = "RED BEACON CAPTURE" )
-public class AutoBeaconRed extends LinearOpMode {
-     private void claim(){
+
+@Autonomous( name = "Red Beacon with Ultrasonic" )
+public class AutoBeaconRedUltrasonic extends LinearOpMode {
+    private void claim(){
         Robot.claimBeacon();
         sleep( 2500 );
         Robot.resetButtonServos();
@@ -17,7 +18,7 @@ public class AutoBeaconRed extends LinearOpMode {
     }
 
     void move(double x, double y){
-        Robot.drive( x, y, 0 );
+        Robot.drive_straight_gyro( x, y );
     }
 
     void initRobot(){
@@ -30,24 +31,22 @@ public class AutoBeaconRed extends LinearOpMode {
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
-        while( opModeIsActive() && time.seconds() < 4.5 ){
+        while( opModeIsActive() && (time.seconds() < 4.5 || Robot.ultrasonicSensor.getUltrasonicLevel() <= Robot.ULTRASONIC_TARGET) ){
             move( -0.5, 0.5 );
         }
-        //disable gyro assistance
-        Robot.toggleGyroAssist();
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            move( -0.1, 0.5 );
+            move( (Robot.ULTRASONIC_TARGET - Robot.ultrasonicSensor.getUltrasonicLevel()) * 0.1, 0.5 );
         }
         claim();
         time.reset();
         //move off the line
         while( opModeIsActive() && time.seconds() < 2 ){
-            move( -0.1, 0.5 );
+            move( (Robot.ULTRASONIC_TARGET - Robot.ultrasonicSensor.getUltrasonicLevel()) * 0.1, 0.5 );
         }
         //drive to the second line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            move( -0.1, 0.5 );
+            move( (Robot.ULTRASONIC_TARGET - Robot.ultrasonicSensor.getUltrasonicLevel()) * 0.1, 0.5 );
         }
         claim();
         move( 0.5, 0 );
