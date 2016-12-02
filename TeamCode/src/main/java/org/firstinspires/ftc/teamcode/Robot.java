@@ -37,11 +37,11 @@ class Robot {
     public static TextToSpeech tts;
     private static boolean gyroAssistEnabled = true;
     private static ElapsedTime time;
-    private static boolean isInitialized = false;
+    private static boolean isInitialized;
     private static Alliance alliance;
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
-    private static boolean ttsInitialized = false;
-    private static boolean hasInformedOfInit = false;
+    private static boolean ttsInitialized;
+    private static boolean hasInformedOfInit;
     public static final int ULTRASONIC_TARGET = 12;
 
     public static void say( String text ){
@@ -94,6 +94,8 @@ class Robot {
     }
 
     public static void init( HardwareMap hardwareMap, Alliance alliance ){
+        hasInformedOfInit = false;
+        ttsInitialized = false;
         tts = new TextToSpeech( hardwareMap.appContext, new Listener() );
         Robot.alliance = alliance;
         frontLeft = hardwareMap.dcMotor.get( "frontLeft" );
