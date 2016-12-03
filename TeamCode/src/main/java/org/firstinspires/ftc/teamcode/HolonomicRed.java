@@ -53,7 +53,6 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         telemetry.addData( "drivex", drivex );
         telemetry.addData( "Turn", turn );
         Robot.addTelemetry( telemetry );
-        Robot.beat();
     }
 
     @Override
@@ -64,7 +63,6 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     @Override
     public void init_loop() {
         Robot.addTelemetry( telemetry );
-        Robot.beat();
         Robot.sayInitData();
     }
 

@@ -55,7 +55,6 @@ public class AutoBeaconRedUltrasonic extends LinearOpMode {
     }
     @Override
     public void handleLoop(){
-        Robot.beat();
         Robot.addTelemetry( telemetry );
         Robot.sayInitData();
         updateTelemetry( telemetry );

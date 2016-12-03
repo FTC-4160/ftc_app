@@ -7,7 +7,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceS
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsDigitalTouchSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -25,7 +24,6 @@ class Robot {
     //This class stores our hardware
     static DcMotor frontLeft, frontRight, backLeft, backRight, launcher, intake;
     static Servo leftButton, rightButton, feeder;
-    static CRServo heartbeat;
     static HiTechnicNxtUltrasonicSensor ultrasonicSensor;
     static ModernRoboticsI2cGyro gyro;
     static ModernRoboticsI2cColorSensor colorRight, colorLeft;
@@ -142,7 +140,6 @@ class Robot {
         launcher.setTargetPosition( launcher.getCurrentPosition() );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
-        heartbeat = hardwareMap.crservo.get( "heartbeat" );
         ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
     }
 
@@ -241,7 +238,6 @@ class Robot {
     }
 
     public static void claimBeacon(){
-        Robot.drive( -0.5, 0, 0 );
         if( alliance == Alliance.RED && colorLeft.red() > colorRight.red() || alliance == Alliance.BLUE && colorLeft.blue() > colorRight.blue() ){
             leftButton.setPosition( 1.0 );
         }else{
@@ -260,13 +256,6 @@ class Robot {
         }
         //round to the nearest 20th
         return toNearestTenth( Range.clip( input, -1, 1 ) );
-    }
-
-    public static void beat(){
-        if( !isInitialized ){
-            return;
-        }
-        heartbeat.setPower( toNearestTenth(time.time() % 1) );
     }
 
     private static double toNearestTenth( double input ){

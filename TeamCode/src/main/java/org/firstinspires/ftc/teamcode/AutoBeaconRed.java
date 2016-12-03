@@ -56,7 +56,6 @@ public class AutoBeaconRed extends LinearOpMode {
     }
     @Override
     public void handleLoop(){
-        Robot.beat();
         Robot.addTelemetry( telemetry );
         Robot.sayInitData();
         updateTelemetry( telemetry );
