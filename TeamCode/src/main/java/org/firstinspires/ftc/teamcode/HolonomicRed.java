@@ -35,7 +35,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
 
         Robot.intake.setPower( gamepad2.left_stick_y );
 
-        if( state != State.FIELD_CONTROL && Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ){
+        if( state != State.FIELD_CONTROL && (Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ) ){
             state = State.DRIVER_CONTROL;
             Robot.resetButtonServos();
         }
@@ -70,28 +70,26 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
     public void onButtonPress(GamepadEvents.Button button) {
         switch( button ) {
             //GAMEPAD1 Buttons
-            case GAMEPAD1_LEFT_BUMPER:
-                Robot.gyroTarget -= 20;
-                break;
-            case GAMEPAD1_RIGHT_BUMPER:
-                Robot.gyroTarget += 20;
-                break;
+            case GAMEPAD1_X:
+                Robot.setGyroTarget();
+                Robot.say( "Gyro Target Set" );
             case GAMEPAD1_Y:
                 Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_FORWARDS;
+                Robot.say( "Mode is now " + state.toString() );
                 break;
             case GAMEPAD1_A:
                 Robot.resetButtonServos();
                 state = State.BEACON_CAPTURE_BACKWARDS;
+                Robot.say( "Mode is now " + state.toString() );
                 break;
             case GAMEPAD1_START:
                 if( this.state == State.FIELD_CONTROL ){
                     state = State.DRIVER_CONTROL;
                 }else if( state == State.DRIVER_CONTROL ){
-                    state = State.DRIVER_CONTROL;
+                    state = State.FIELD_CONTROL;
                 }
                 Robot.say( "Mode is now " + state.toString() );
-                state = State.FIELD_CONTROL;
                 break;
             //GAMEPAD2 values
             case GAMEPAD2_A:

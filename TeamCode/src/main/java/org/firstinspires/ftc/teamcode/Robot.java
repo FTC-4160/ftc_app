@@ -138,6 +138,7 @@ class Robot {
         launcher.setMode( DcMotor.RunMode.RUN_TO_POSITION );
         launcher.setPower( 1.0 );
         launcher.setTargetPosition( launcher.getCurrentPosition() );
+        launcher.setDirection( DcMotor.Direction.REVERSE );
         time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
         ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
@@ -148,7 +149,7 @@ class Robot {
     }
 
     public static void driveFieldOriented( double drivex, double drivey, double turn ){
-        double θ = Math.toRadians( gyro.getHeading() - gyroTarget + 45 );
+        double θ = Math.toRadians( -gyro.getIntegratedZValue() + gyroTarget + 45 );
 
         double magnitude = Math.hypot( drivex, drivey );
         //get the rotated point
@@ -223,7 +224,7 @@ class Robot {
 
     public static void launchBall(){
         Robot.stop();
-        launcher.setTargetPosition( launcher.getCurrentPosition() + 1140 );
+        launcher.setTargetPosition( launcher.getCurrentPosition() + 1120 );
     }
 
     public static void stop(){
