@@ -13,7 +13,7 @@ public class CarolOfTheBells extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         waitForStart();
-        MediaPlayer mediaPlayer = MediaPlayer.create( hardwareMap.appContext, R.raw.carol_of_the_bells );
+        MediaPlayer mediaPlayer = MediaPlayer.create( hardwareMap.appContext, R.raw.carolofthebells );
         mediaPlayer.start();
         while( opModeIsActive() && mediaPlayer.isPlaying() ){
             sleep( 500 );

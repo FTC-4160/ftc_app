@@ -40,7 +40,7 @@ class Robot {
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
     private static boolean ttsInitialized;
     private static boolean hasInformedOfInit;
-    public static final int ULTRASONIC_TARGET = 12;
+    public static final int ULTRASONIC_TARGET = 20;
 
     public static void say( String text ){
         tts.speak( text, TextToSpeech.QUEUE_FLUSH, null );
@@ -203,7 +203,7 @@ class Robot {
     }
 
     public static void drive_straight_gyro( double drivex, double drivey ){
-        double turn = (gyro.getIntegratedZValue() - gyroTarget)* 0.01;
+        double turn = (-gyro.getIntegratedZValue() + gyroTarget)* 0.01;
 
         double magnitude = Math.hypot( drivex, drivey );
         //get the rotated point
