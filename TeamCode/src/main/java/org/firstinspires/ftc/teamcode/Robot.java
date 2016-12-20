@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -34,7 +33,6 @@ class Robot {
     static int gyroTarget = 0;
     public static TextToSpeech tts;
     private static boolean gyroAssistEnabled = true;
-    private static ElapsedTime time;
     private static boolean isInitialized;
     private static Alliance alliance;
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
@@ -44,6 +42,17 @@ class Robot {
 
     public static void say( String text ){
         tts.speak( text, TextToSpeech.QUEUE_FLUSH, null );
+    }
+
+    /**
+     * @return distance from wall in cm or 0 if reading is currently garbage
+     */
+    public static int getDistanceFromTarget(){
+        int uslevel = (int)ultrasonicSensor.getUltrasonicLevel();
+        if( uslevel == 255 ) { // if reading is garbage
+            return 0;
+        }
+        return (int)ultrasonicSensor.getUltrasonicLevel() - ULTRASONIC_TARGET;
     }
 
     public static void sayInitData(){
@@ -83,7 +92,7 @@ class Robot {
         t.addData( "Gyro Target", gyroTarget );
         t.addData( "Gyro Enabled", gyroAssistEnabled );
 
-        t.addData( "Ultrasonic Level", ultrasonicSensor.getUltrasonicLevel() );
+        t.addData( "Ultrasonic Distance from Target", getDistanceFromTarget() );
         t.update();
     }
 
@@ -139,7 +148,6 @@ class Robot {
         launcher.setPower( 1.0 );
         launcher.setTargetPosition( launcher.getCurrentPosition() );
         launcher.setDirection( DcMotor.Direction.REVERSE );
-        time = new ElapsedTime( ElapsedTime.Resolution.MILLISECONDS );
         Robot.isInitialized = true;
         ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
     }
