@@ -30,7 +30,7 @@ public class AutoBeaconRed extends LinearOpMode {
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
-        while( opModeIsActive() && time.seconds() < 4.5 ){
+        while( opModeIsActive() && time.seconds() < 4.5 && !Robot.detectsLine() ){
             move( -0.5, 0.5 );
         }
         //disable gyro assistance
@@ -39,6 +39,7 @@ public class AutoBeaconRed extends LinearOpMode {
         while( opModeIsActive() && !Robot.detectsLine() ) {
             move( -0.1, 0.5 );
         }
+        Robot.stop();
         claim();
         time.reset();
         //move off the line
@@ -49,6 +50,7 @@ public class AutoBeaconRed extends LinearOpMode {
         while( opModeIsActive() && !Robot.detectsLine() ) {
             move( -0.1, 0.5 );
         }
+        Robot.stop();
         claim();
         move( 0.5, 0 );
         sleep( 250 );

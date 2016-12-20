@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by Steven on 8/23/2016.
@@ -33,7 +34,7 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
         double drivex = Math.pow( gamepad1.right_stick_x, 3 );
         double turn = gamepad1.right_trigger - gamepad1.left_trigger;
 
-        Robot.intake.setPower( gamepad2.left_stick_y );
+        Robot.intake.setPower( Range.clip( gamepad2.left_stick_y, 0, 1.0 ) + Range.clip( gamepad2.right_stick_y, -1.0, 0 ) );
 
         if( state != State.FIELD_CONTROL && (Math.abs( drivey ) + Math.abs( drivex ) > 0.1 || Math.abs( turn ) > 0.1 ) ){
             state = State.DRIVER_CONTROL;
@@ -101,6 +102,8 @@ public class HolonomicRed extends OpMode implements GamepadEvents.Handler {
             case GAMEPAD2_B:
                 Robot.launchBall();
                 break;
+            case GAMEPAD2_X:
+                Robot.claimBeacons();
         }
     }
 

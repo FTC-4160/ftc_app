@@ -144,6 +144,11 @@ class Robot {
         ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
     }
 
+    public static void claimBeacons(){
+        leftButton.setPosition( 1.0 );
+        rightButton.setPosition( 0.0 );
+    }
+
     public static void setGyroTarget(){
         gyroTarget = gyro.getHeading();
     }
