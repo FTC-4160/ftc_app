@@ -31,33 +31,40 @@ public class AutoBeaconRedUltrasonic extends LinearOpMode {
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
-        while( opModeIsActive() && time.seconds() < 4.5 && Robot.getDistanceFromTarget() >= 0 ){
-            move( -0.5, 0.5 );
+        while( opModeIsActive() && Robot.getUltrasonicLevel() > 10 && !Robot.detectsLine() ){
+            move( -0.3, 0.4 );
         }
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            double walldist = Robot.getDistanceFromTarget();
-            move( walldist * 0.1, 0.5 );
-            sleep( 50 );
+            move( 0, 0.3 );
+            sleep( 10 );
         }
+        //drive to the beacon
+        while( opModeIsActive() && Robot.getUltrasonicLevel() > 5 ){
+            move( -0.3, 0.0 );
+        }
+
         Robot.stop();
         claim();
+
+        while( opModeIsActive() && Robot.getUltrasonicLevel() < 10 ){
+            move( 0.3, 0.0 );
+        }
+
         time.reset();
-        /*
         //move off the line
         while( opModeIsActive() && time.seconds() < 2 ){
-            move( (Robot.ULTRASONIC_TARGET - Robot.ultrasonicSensor.getUltrasonicLevel()) * 0.1, 0.5 );
+            move( 0, 0.5 );
         }
         //drive to the second line
         while( opModeIsActive() && !Robot.detectsLine() ) {
-            move( (Robot.ULTRASONIC_TARGET - Robot.ultrasonicSensor.getUltrasonicLevel()) * 0.1, 0.5 );
+            move( 0, 0.5 );
         }
         Robot.stop();
         claim();
         move( 0.5, 0 );
         sleep( 250 );
         Robot.stop();
-        */
     }
     @Override
     public void handleLoop(){

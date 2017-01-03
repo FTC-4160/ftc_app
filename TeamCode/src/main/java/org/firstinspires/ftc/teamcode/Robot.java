@@ -38,7 +38,7 @@ class Robot {
     private static final double ANGLE_45 = Math.sqrt( 2 ) / 2;
     private static boolean ttsInitialized;
     private static boolean hasInformedOfInit;
-    public static final int ULTRASONIC_TARGET = 20;
+    private static int cachedUltrasonicReading = 255;
 
     public static void say( String text ){
         tts.speak( text, TextToSpeech.QUEUE_FLUSH, null );
@@ -47,18 +47,19 @@ class Robot {
     /**
      * @return distance from wall in cm or 0 if reading is currently garbage
      */
-    public static int getDistanceFromTarget(){
+    public static int getUltrasonicLevel(){
         int uslevel = (int)ultrasonicSensor.getUltrasonicLevel();
-        if( uslevel == 255 ) { // if reading is garbage
-            return 0;
+        if( Math.abs( uslevel - cachedUltrasonicReading ) < 50 ) { // if reading isn't garbage
+            cachedUltrasonicReading = uslevel;
         }
-        return (int)ultrasonicSensor.getUltrasonicLevel() - ULTRASONIC_TARGET;
+        return cachedUltrasonicReading;
     }
 
     public static void sayInitData(){
         if( !hasInformedOfInit && isInitialized && !gyro.isCalibrating() ){
             say( "Initialization Complete" );
             hasInformedOfInit = true;
+            cachedUltrasonicReading = (int)ultrasonicSensor.getUltrasonicLevel();
         }
     }
 
@@ -92,7 +93,7 @@ class Robot {
         t.addData( "Gyro Target", gyroTarget );
         t.addData( "Gyro Enabled", gyroAssistEnabled );
 
-        t.addData( "Ultrasonic Distance from Target", getDistanceFromTarget() );
+        t.addData( "Ultrasonic Distance from Target", getUltrasonicLevel() );
         t.update();
     }
 
@@ -150,6 +151,7 @@ class Robot {
         launcher.setDirection( DcMotor.Direction.REVERSE );
         Robot.isInitialized = true;
         ultrasonicSensor = (HiTechnicNxtUltrasonicSensor)hardwareMap.ultrasonicSensor.get( "dist" );
+        cachedUltrasonicReading = (int)ultrasonicSensor.getUltrasonicLevel();
     }
 
     public static void claimBeacons(){
