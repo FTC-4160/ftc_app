@@ -31,13 +31,14 @@ public class AutoBeaconRedUltrasonic extends LinearOpMode {
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         //move to the wall
-        while( opModeIsActive() && Robot.getUltrasonicLevel() > 10 && !Robot.detectsLine() ){
+        while( opModeIsActive() && (time.seconds() < 1.5 || Robot.getUltrasonicLevel() > 27) && !Robot.detectsLine() ){
             move( -0.3, 0.4 );
         }
+        Robot.stop();
+        sleep( 2000 );
         //drive to the line
         while( opModeIsActive() && !Robot.detectsLine() ) {
             move( 0, 0.3 );
-            sleep( 10 );
         }
         //drive to the beacon
         while( opModeIsActive() && Robot.getUltrasonicLevel() > 5 ){

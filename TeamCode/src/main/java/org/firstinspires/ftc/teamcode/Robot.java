@@ -48,11 +48,7 @@ class Robot {
      * @return distance from wall in cm or 0 if reading is currently garbage
      */
     public static int getUltrasonicLevel(){
-        int uslevel = (int)ultrasonicSensor.getUltrasonicLevel();
-        if( Math.abs( uslevel - cachedUltrasonicReading ) < 50 ) { // if reading isn't garbage
-            cachedUltrasonicReading = uslevel;
-        }
-        return cachedUltrasonicReading;
+        return (int)ultrasonicSensor.getUltrasonicLevel();
     }
 
     public static void sayInitData(){
